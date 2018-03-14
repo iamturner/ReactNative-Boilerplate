@@ -1,0 +1,122 @@
+import React, { Component } from 'react';
+import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Button, Input, Text, Container, Colors } from './../../theme';
+import authProvider from './../../providers/auth';
+
+export class ForgotPassword extends Component {
+
+	static navigatorButtons = {
+		leftButtons: [{
+			title: 'Cancel', 
+			id: 'cancel'
+		}]
+	}
+	
+	constructor(props, context) {
+		super(props, context);
+		this.state = {
+			valid: false, 
+			loading: false
+		}
+		this.recoverPasswordForm = {
+			email: null
+		}
+		this.refs;
+		/* Listen for nav bar events, (e.g. clicking the 'Cancel' button) */
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+	}
+
+	onNavigatorEvent(event) {
+		/* Check if event is a button press */
+		if (event.type == 'NavBarButtonPress') {
+			/* Check ID of button pressed */
+			if (event.id == 'cancel') {
+				/* Dismiss Modal */
+				this.props.navigator.dismissModal();
+			}
+			
+		}
+		
+	}
+	
+	validateRecoverPasswordForm() {
+		let email = this.recoverPasswordForm.email;
+		this.setState({ 
+			valid: (email) ? true : false
+		});
+	}
+
+	recoverPassword() {
+		if (!this.state.valid) {
+			return false;
+		}
+		this.setState({ loading: true }, () => {
+			authProvider.recoverPassword(this.recoverPasswordForm.email).then(() => {
+				this.setState({ loading: false }, () => {
+					this.props.navigator.dismissModal();
+				});
+			}, error => {
+				this.setState({ loading: false }, () => {
+					setTimeout(() => {
+						Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
+					}, 10);
+				});
+			});
+		});
+	}
+	
+	render() {
+		
+		return (
+			
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+			
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+						
+				<Container>
+
+					<View style={{ marginTop: 20, paddingHorizontal: 16 }}>
+						<Text style={{ fontSize: 14, color: Colors.text }}>Please enter your email address and we will send you a link to reset your password.</Text>
+					</View>
+					
+					{/* Inputs */}
+
+					<View padding style={{ flex: 1 }}>
+			
+						<View style={{ marginBottom: 16 }}>
+							<Input  
+								keyboardType="email-address" 
+								autoCapitalize="none"
+								returnKeyType={"next"}
+								onChangeText={(value) => {
+									this.recoverPasswordForm.email = value, 
+									this.validateRecoverPasswordForm()
+								}}
+								autoCorrect={false}>
+								<Input.Before>
+									<Text style={{ marginRight: 24 }}>Email</Text>
+								</Input.Before>
+							</Input>
+						</View>
+
+						{ (!this.state.valid || this.state.loading) && <Button disabled>
+							<Button.Text>Submit</Button.Text>
+						</Button> }
+							
+						{ (this.state.valid && !this.state.loading) && <Button onPress={() => this.recoverPassword()}>
+							<Button.Text>Submit</Button.Text>
+						</Button> }
+
+					</View>
+			
+				</Container>
+			
+			</KeyboardAvoidingView>
+					
+			</TouchableWithoutFeedback>
+			
+		);
+		
+	}
+	
+}
