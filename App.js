@@ -1,14 +1,12 @@
 import React, { Component } from "react";
+import { AsyncStorage } from 'react-native';
 import { View, Colors } from './theme';
 import { Navigation } from 'react-native-navigation';
 import { registerScreens } from './screens';
 
-//import firebase from './lib/firebase';
+/* Check if user is authenticated */
 
-//firebase.auth().onAuthStateChanged((user) => {
-	
-	/* Check if user is authenticated */
-	
+AsyncStorage.getItem('loggedUser', (err, user) => {
 	Navigation.startSingleScreenApp({
 		screen: {
 			screen: (user ? 'screen.Home' : 'screen.Login'),
@@ -21,8 +19,7 @@ import { registerScreens } from './screens';
 		}, 
 		animationType: 'none'
 	})
-	
-//});
+});
 
 registerScreens();
 
