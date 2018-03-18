@@ -34,7 +34,7 @@ export class EditProfile extends Component {
 	componentWillMount() {
 		profileProvider.getUserProfile().then((user) => {
 			this.setState({
-				userProfile: user
+				userProfile: JSON.parse(JSON.stringify(user))
         	}, () => {
 				this.validateUserProfileForm();
 			});
