@@ -6,8 +6,10 @@ export class Input extends React.Component {
     constructor(props, context) {
         super(props, context);
 		
-		this.contentBefore = null;
-		this.contentAfter = null;
+		this.state = {
+			contentBefore: null, 
+			contentAfter: null
+		}
     }
 	
 	static get Before() {
@@ -20,19 +22,23 @@ export class Input extends React.Component {
 
     render() {
 		
-		React.Children.forEach(this.props.children, (child) => {
-			
-			if (child.type.displayName == 'InputBefore') {
-				this.contentBefore = child;
-			} else if (child.type.displayName == 'InputAfter') {
-				this.contentAfter = child;
+		React.Children.map(this.props.children, (child) => {
+
+			if (child.type === InputBefore) {
+				if (!this.state.contentBefore) {
+					this.setState({ contentBefore: child });
+				}
+			} else if (child.type === InputAfter) {
+				if (!this.state.contentAfter) {
+					this.setState({ contentAfter: child });	
+				}
 			}
 			
 		});
 		
         return (
 			<View style={[styles.container, this.props.style]}>
-				{ this.contentBefore }
+				{ this.state.contentBefore }
 				<TextInput 
 					style={styles.input} 
 					value={this.props.value}
@@ -48,7 +54,7 @@ export class Input extends React.Component {
 					autoCorrect={this.props.autoCorrect}
 					ref={this.props.inputRef} 
 					underlineColorAndroid='transparent' />
-				{ this.contentAfter }
+				{ this.state.contentAfter }
 			</View>
         )
 		
