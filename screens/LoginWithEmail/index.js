@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Colors, Container } from './../../theme';
+import { View, Button, Input, Text, Colors, Container, Loading } from './../../theme';
 import authProvider from './../../providers/auth';
 
 export class LoginWithEmail extends Component {
@@ -8,8 +8,7 @@ export class LoginWithEmail extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			valid: false, 
-			loading: false
+			valid: false
 		}
 		this.loginWithEmailForm = {
 			email: null, 
@@ -48,9 +47,9 @@ export class LoginWithEmail extends Component {
 		}
 		let email = this.loginWithEmailForm.email;
 		let password = this.loginWithEmailForm.password;
-		this.setState({ loading: true }, () => {
+		Loading.show().then(() => {
 			authProvider.loginWithEmail(email, password).then(() => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					this.props.navigator.resetTo({
 						screen: 'screen.Home',
 						title: 'Home', 
@@ -63,7 +62,7 @@ export class LoginWithEmail extends Component {
 					});
 				});
 			}, error => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 				});
 			});
@@ -125,11 +124,11 @@ export class LoginWithEmail extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid || this.state.loading) && <Button disabled>
+						{ (!this.state.valid) && <Button disabled>
 							<Button.Text>Sign In</Button.Text>
 						</Button> }
 							
-						{ (this.state.valid && !this.state.loading) && <Button onPress={() => this.loginWithEmail()}>
+						{ (this.state.valid) && <Button onPress={() => this.loginWithEmail()}>
 							<Button.Text>Sign In</Button.Text>
 						</Button> }
 

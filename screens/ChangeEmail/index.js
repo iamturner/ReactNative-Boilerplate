@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, AlertIOS } from 'react-native';
-import { View, Button, Input, Text, Container } from './../../theme';
+import { View, Button, Input, Text, Container, Loading } from './../../theme';
 import authProvider from "./../../providers/auth";
 import prompt from 'react-native-prompt-android';
 
@@ -9,8 +9,7 @@ export class ChangeEmail extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			valid: false, 
-			loading: false
+			valid: false
 		}
 		this.changeEmailForm = { 
 			newEmail: null
@@ -53,13 +52,13 @@ export class ChangeEmail extends Component {
 	}
 	
 	actionChangeEmail(newEmail, password) {
-		this.setState({ loading: true }, () => {
+		Loading.show().then(() => {
 			authProvider.updateEmail(newEmail, password).then(() => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					this.props.navigator.pop();
 				});
 			}, error => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 				});
 			});
@@ -95,11 +94,11 @@ export class ChangeEmail extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid || this.state.loading) && <Button disabled>
+						{ (!this.state.valid) && <Button disabled>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
 							
-						{ (this.state.valid && !this.state.loading) && <Button onPress={() => this.changeEmail()}>
+						{ (this.state.valid) && <Button onPress={() => this.changeEmail()}>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
 

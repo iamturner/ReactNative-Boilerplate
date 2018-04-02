@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { View, Button, Input, Text, Container, Colors } from './../../theme';
+import { View, Button, Input, Text, Container, Colors, Loading } from './../../theme';
 import authProvider from './../../providers/auth';
 
 export class ForgotPassword extends Component {
@@ -15,8 +15,7 @@ export class ForgotPassword extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			valid: false, 
-			loading: false
+			valid: false
 		}
 		this.recoverPasswordForm = {
 			email: null
@@ -50,13 +49,13 @@ export class ForgotPassword extends Component {
 		if (!this.state.valid) {
 			return false;
 		}
-		this.setState({ loading: true }, () => {
+		Loading.show().then(() => {
 			authProvider.recoverPassword(this.recoverPasswordForm.email).then(() => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					this.props.navigator.dismissModal();
 				});
 			}, error => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					setTimeout(() => {
 						Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 					}, 10);
@@ -99,11 +98,11 @@ export class ForgotPassword extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid || this.state.loading) && <Button disabled>
+						{ (!this.state.valid) && <Button disabled>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
 							
-						{ (this.state.valid && !this.state.loading) && <Button onPress={() => this.recoverPassword()}>
+						{ (this.state.valid) && <Button onPress={() => this.recoverPassword()}>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
 

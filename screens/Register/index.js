@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Colors, Container } from './../../theme';
+import { View, Button, Input, Text, Colors, Container, Loading } from './../../theme';
 import authProvider from './../../providers/auth';
 
 export class Register extends Component {
@@ -8,8 +8,7 @@ export class Register extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			valid: false, 
-			loading: false
+			valid: false
 		}
 		this.registerForm = {
 			name: null, 
@@ -39,9 +38,9 @@ export class Register extends Component {
 		let name = this.registerForm.name;
 		let email = this.registerForm.email;
 		let password = this.registerForm.password;
-		this.setState({ loading: true }, () => {
+		Loading.show().then(() => {
 			authProvider.register(name, email, password).then(() => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					this.props.navigator.resetTo({
 						screen: 'screen.Home',
 						title: 'Home', 
@@ -54,7 +53,7 @@ export class Register extends Component {
 					});
 				});
 			}, error => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 				});
 			});
@@ -137,11 +136,11 @@ export class Register extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid || this.state.loading) && <Button disabled>
+						{ (!this.state.valid) && <Button disabled>
 							<Button.Text>Create Account</Button.Text>
 						</Button> }
 							
-						{ (this.state.valid && !this.state.loading) && <Button onPress={() => this.register()}>
+						{ (this.state.valid) && <Button onPress={() => this.register()}>
 							<Button.Text>Create Account</Button.Text>
 						</Button> }
 

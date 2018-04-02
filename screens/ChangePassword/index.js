@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Container } from './../../theme';
+import { View, Button, Input, Text, Container, Loading } from './../../theme';
 import authProvider from "./../../providers/auth";
 
 export class ChangePassword extends Component {
@@ -8,8 +8,7 @@ export class ChangePassword extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			valid: false, 
-			loading: false
+			valid: false
 		}
 		this.changePasswordForm = {
 			current: null, 
@@ -36,13 +35,13 @@ export class ChangePassword extends Component {
 		}
 		let currentPassword = this.changePasswordForm.current;
 		let newPassword = this.changePasswordForm.new;
-		this.setState({ loading: true }, () => {
+		Loading.show().then(() => {
 			authProvider.updatePassword(currentPassword, newPassword).then(() => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					this.props.navigator.pop();
 				});
 			}, error => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 				});
 			});
@@ -101,11 +100,11 @@ export class ChangePassword extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid || this.state.loading) && <Button disabled>
+						{ (!this.state.valid) && <Button disabled>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
 							
-						{ (this.state.valid && !this.state.loading) && <Button onPress={() => this.changePassword()}>
+						{ (this.state.valid) && <Button onPress={() => this.changePassword()}>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
 

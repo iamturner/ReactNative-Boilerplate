@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, AlertIOS, Alert } from 'react-native';
-import { View, Button, List, Text, Colors, Container } from './../../theme';
+import { View, Button, List, Text, Colors, Container, Loading } from './../../theme';
 import authProvider from './../../providers/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import prompt from 'react-native-prompt-android';
@@ -9,9 +9,6 @@ export class AccountSettings extends Component {
 
 	constructor(props, context) {
 		super(props, context);
-		this.state = {
-			loading: false
-		}
 	}
 	
 	goToChangeEmail() {
@@ -55,9 +52,9 @@ export class AccountSettings extends Component {
 	}
 	
 	actionDeleteAccount(password) {
-		this.setState({ loading: true }, () => {
+		Loading.show().then(() => {
 			authProvider.deleteAccount(password).then(() => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					this.props.navigator.resetTo({
 						screen: 'screen.Login',
 						title: 'Login', 
@@ -70,7 +67,7 @@ export class AccountSettings extends Component {
 					});
 				});
 			}, error => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 				});
 			});

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
-import { View, Button, List, Input, Text, Container, Colors } from './../../theme';
+import { View, Button, List, Input, Text, Container, Colors, Loading } from './../../theme';
 import profileProvider from './../../providers/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -23,7 +23,6 @@ export class EditProfile extends Component {
 		super(props, context);
 		this.state = {
 			valid: false, 
-			loading: false, 
 			userProfile: null
         }
 		this.inputs = {};
@@ -89,22 +88,22 @@ export class EditProfile extends Component {
 	}
 
 	updateProfile() {
-		if (!this.state.valid || this.state.loading) {
+		if (!this.state.valid) {
 			return false;
 		}
 		let name = this.state.userProfile.name;
 		let location = this.state.userProfile.location;
 		let photo = this.state.userProfile.photo;
-		this.setState({ loading: true }, () => {
+		Loading.show({ text: 'Saving...' }).then(() => {
 			profileProvider.updateUserProfile(name, location, photo).then(() => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					this.props.onUpdatedProfile({
 						userProfile: this.state.userProfile
 					});
 					this.props.navigator.dismissModal();
 				});
 			}, error => {
-				this.setState({ loading: false }, () => {
+				Loading.dismiss().then(() => {
 					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 				});
 			});
