@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, Alert, Image, ActionSheetIOS } from 'react-native';
 import { View, Button, List, Input, Text, Container, Colors, Loading } from './../../theme';
 import profileProvider from './../../providers/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,9 +31,9 @@ export class EditProfile extends Component {
 	}
 
 	componentWillMount() {
-		profileProvider.getUserProfile().then((user) => {
+		profileProvider.getUserProfile().on('value', userProfileSnapshot => {
 			this.setState({
-				userProfile: JSON.parse(JSON.stringify(user))
+				userProfile: JSON.parse(JSON.stringify(userProfileSnapshot.val()))
         	}, () => {
 				this.validateUserProfileForm();
 			});
@@ -65,7 +65,63 @@ export class EditProfile extends Component {
 		});
 	}
 
-	openCameraRoll() {
+	async openCameraRoll() {
+		if (this.state.userProfile.photo) {
+			/* Display photo options */
+			const confirm = () => {
+				return new Promise((resolve, reject) => {
+					/* Display action sheet (iOS) */
+					if (Platform.OS === 'ios') {
+						ActionSheetIOS.showActionSheetWithOptions({
+							options: ['Choose New Photo', 'Delete Photo', 'Cancel'],
+							destructiveButtonIndex: 1,
+							cancelButtonIndex: 2,
+						}, (buttonIndex) => {
+							switch (buttonIndex) {
+								case 0 :
+									resolve();
+									break;
+								case 1 :
+									/* Remove user's profile photo*/
+									let profile = this.state.userProfile;
+										profile.photo = null;
+									this.setState({
+										userProfile: profile
+									});
+									
+									reject();
+									break;
+								case 2 :
+									reject();
+									break;
+							}
+						});
+					} 
+					/* Display alert (Android) */
+					else {
+						Alert.alert('Profile Photo', 'Edit your profile photo.', [{
+							text: 'Delete', onPress: () => {
+								/* Remove user's profile photo*/
+								let profile = this.state.userProfile;
+									profile.photo = null;
+								this.setState({
+									userProfile: profile
+								});
+
+								reject();
+							}, style: 'destructive'}, {
+							text: 'Cancel', onPress: () => {
+								reject();
+							}, style: 'cancel'}, {
+							text: 'Choose', onPress: () => {
+								resolve();
+							}
+						}], { cancelable: false });
+					}
+				});
+			}
+			await confirm();
+		}
 		/* Open Modal */
 		this.props.navigator.showModal({
 			screen: 'screen.CameraRoll',
@@ -97,9 +153,6 @@ export class EditProfile extends Component {
 		Loading.show({ text: 'Saving...' }).then(() => {
 			profileProvider.updateUserProfile(name, location, photo).then(() => {
 				Loading.dismiss().then(() => {
-					this.props.onUpdatedProfile({
-						userProfile: this.state.userProfile
-					});
 					this.props.navigator.dismissModal();
 				});
 			}, error => {

@@ -64,16 +64,6 @@ export class CameraRollPage extends Component {
 			
 					<View style={styles.photosContainer}>
 			
-						<TouchableOpacity style={styles.photo} onPress={() => this.selectPhoto(null)}>
-							<Icon 
-								name="ios-trash" 
-								size={40} 
-								style={[
-									styles.photoIcon, 
-									{color: Colors.danger}
-								]} />
-						</TouchableOpacity>
-			
 						{ this.state.photos.map((p, i) => { return (
 							<TouchableOpacity key={i} style={styles.photo} onPress={() => this.selectPhoto(p)}>
 								<Image style={styles.photoImage} source={{ uri: p.node.image.uri }} />
