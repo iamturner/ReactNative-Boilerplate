@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text as El } from 'react-native';
+import { Colors } from './../variables/colors';
 
 export class Text extends React.Component {
     
@@ -9,10 +10,19 @@ export class Text extends React.Component {
         
     render() {
         return (
-			<El style={[{ fontSize: 16 }, this.props.style]}>
+			<El 
+				{...this.props}
+				style={[styles.text, this.props.style]}>
 				{ this.props.children }
 			</El>
         )
     }
     
 }
+
+const styles = StyleSheet.create({
+	text: {
+		fontSize: 16, 
+		color: Colors.primary
+	}
+});

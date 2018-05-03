@@ -11,6 +11,7 @@ export class Container extends React.Component {
     render() {
         return (
 			<View 
+				{...this.props}
 				style={[styles.container, this.props.style]}
 				padding={this.props.padding}>
 				{ this.props.children }

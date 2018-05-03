@@ -39,6 +39,15 @@ export class ChangePassword extends Component {
 			authProvider.updatePassword(currentPassword, newPassword).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.pop();
+					/* Toast notification */
+					this.props.navigator.showInAppNotification({
+						screen: 'component.Toast', 
+						position: 'bottom', 
+						passProps: {
+							message: "Your password has been updated."
+						}, 
+						autoDismissTimerSec: 3
+					});
 				});
 			}, error => {
 				Loading.dismiss().then(() => {
@@ -52,10 +61,10 @@ export class ChangePassword extends Component {
 		
 		return (
 			
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+			
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-						
 				<Container padding>
 
 					{/* Inputs */}
@@ -87,13 +96,20 @@ export class ChangePassword extends Component {
 								borderTopLeftRadius: 0, 
 								borderTopRightRadius: 0 }}
 								secureTextEntry={true}
+								returnKeyType={"go"}
+								enablesReturnKeyAutomatically={true}
 								onChangeText={(value) => {
 									this.changePasswordForm.new = value, 
 									this.validateChangePasswordForm()
 								}}
 								inputRef={input => {
                                     this.inputs['new'] = input;
-                                }}>
+                                }}
+								onSubmitEditing={() => {
+									if (this.state.valid) {
+										this.changePassword();
+									}
+								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>New</Text>
 								</Input.Before>
@@ -112,9 +128,9 @@ export class ChangePassword extends Component {
 			
 				</Container>
 			
-			</KeyboardAvoidingView>
-			
 			</TouchableWithoutFeedback>
+			
+			</KeyboardAvoidingView>
 			
 		);
 		

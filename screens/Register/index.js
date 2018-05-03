@@ -64,10 +64,10 @@ export class Register extends Component {
 		
 		return (
 			
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+			
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-						
 				<Container padding>
 
 					{/* Inputs */}
@@ -123,13 +123,20 @@ export class Register extends Component {
 								borderTopLeftRadius: 0, 
 								borderTopRightRadius: 0 }}
 								secureTextEntry={true}
+								returnKeyType={"go"}
+								enablesReturnKeyAutomatically={true}
 								onChangeText={(value) => {
 									this.registerForm.password = value, 
 									this.validateRegisterForm()
 								}}
 								inputRef={input => {
                                     this.inputs['password'] = input;
-                                }}>
+                                }}
+								onSubmitEditing={() => {
+									if (this.state.valid) {
+										this.register();
+									}
+								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Password</Text>
 								</Input.Before>
@@ -148,9 +155,9 @@ export class Register extends Component {
 			
 				</Container>
 			
-			</KeyboardAvoidingView>
-			
 			</TouchableWithoutFeedback>
+						 
+			</KeyboardAvoidingView>
 			
 		);
 		

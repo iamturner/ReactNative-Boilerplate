@@ -15,13 +15,13 @@ export class Button extends React.Component {
     render() {
         return (
 			<TouchableOpacity 
+				{...this.props}
 				style={[
 					styles.button, 
 					this.props.style, 
 					(this.props.outline ? styles.buttonOutline : null), 
 					(this.props.disabled ? styles.buttonDisabled : null)
 				]} 
-				onPress={this.props.onPress}
 				activeOpacity={this.props.disabled ? 0.4 : 0.8}>
 				<View>
 					{ this.props.children }

@@ -56,6 +56,15 @@ export class ChangeEmail extends Component {
 			authProvider.updateEmail(newEmail, password).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.pop();
+					/* Toast notification */
+					this.props.navigator.showInAppNotification({
+						screen: 'component.Toast', 
+						position: 'bottom', 
+						passProps: {
+							message: "Your email address has been updated."
+						}, 
+						autoDismissTimerSec: 3
+					});
 				});
 			}, error => {
 				Loading.dismiss().then(() => {
@@ -69,10 +78,10 @@ export class ChangeEmail extends Component {
 		
 		return (
 			
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+			
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-						
 				<Container padding>
 
 					{/* Inputs */}
@@ -87,7 +96,14 @@ export class ChangeEmail extends Component {
 									this.changeEmailForm.newEmail = value, 
 									this.validateChangeEmailForm()
 								}} 
-								autoCorrect={false}>
+								autoCorrect={false}
+								returnKeyType={"go"}
+								enablesReturnKeyAutomatically={true}
+								onSubmitEditing={() => {
+									if (this.state.valid) {
+										this.changeEmail();
+									}
+								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Email</Text>
 								</Input.Before>
@@ -106,9 +122,9 @@ export class ChangeEmail extends Component {
 			
 				</Container>
 			
-			</KeyboardAvoidingView>
-			
 			</TouchableWithoutFeedback>
+						 
+			</KeyboardAvoidingView>
 			
 		);
 		

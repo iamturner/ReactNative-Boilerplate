@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text, TextInput } from 'react-native';
 
@@ -36,23 +37,16 @@ export class Input extends React.Component {
 			
 		});
 		
+		let computedProps = _.clone(this.props);
+		delete computedProps.children;
+		
         return (
 			<View style={[styles.container, this.props.style]}>
 				{ this.state.contentBefore }
 				<TextInput 
-					style={styles.input} 
-					value={this.props.value}
-					blurOnSubmit={this.props.blurOnSubmit} 					
-					onSubmitEditing={this.props.onSubmitEditing} 
-					placeholder={this.props.placeholder} 
-					secureTextEntry={this.props.secureTextEntry} 
-					spellCheck={this.props.spellCheck} 
-					returnKeyType={this.props.returnKeyType}
-					onChangeText={this.props.onChangeText}
-					keyboardType={this.props.keyboardType}
-					autoCapitalize={this.props.autoCapitalize}
-					autoCorrect={this.props.autoCorrect}
-					ref={this.props.inputRef} 
+					{...computedProps}
+					style={styles.input}
+					ref={this.props.inputRef}
 					underlineColorAndroid='transparent' />
 				{ this.state.contentAfter }
 			</View>
@@ -105,12 +99,12 @@ const styles = StyleSheet.create({
 		flexDirection: 'row', 
 		overflow: 'hidden', 
 		paddingHorizontal: 16, 
-		paddingVertical: (Platform.OS === 'ios' ? 12 : 0), 
 		alignItems: 'center', 
 		flexWrap: 'wrap'
 	}, 
 	input: {
 		flex: 1, 
-		fontSize: 16
+		fontSize: 16, 
+		paddingVertical: (Platform.OS === 'ios' ? 12 : 8)
 	}
 });

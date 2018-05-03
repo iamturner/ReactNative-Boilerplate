@@ -7,6 +7,7 @@ export var { Text } = require('./components/text');
 export var { Container } = require('./components/container');
 
 export var Loading = require('./components/loading');
+export var Toast = require('./components/toast');
 
 /* Variables */
 export var { Colors } = require('./variables/colors');

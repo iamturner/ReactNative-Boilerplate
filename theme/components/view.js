@@ -9,7 +9,9 @@ export class View extends React.Component {
         
     render() {
         return (
-			<El style={[this.props.style, (this.props.padding ? styles.padding : null)]}>
+			<El 
+				{...this.props}
+				style={[this.props.style, (this.props.padding ? styles.padding : null)]}>
 				{ this.props.children }
 			</El>
         )

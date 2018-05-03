@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, Alert, Image, ActionSheetIOS } from 'react-native';
+import { Platform, StyleSheet, Alert, Image, ActionSheetIOS, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { View, Button, List, Input, Text, Container, Colors, Loading } from './../../theme';
 import profileProvider from './../../providers/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,9 +31,9 @@ export class EditProfile extends Component {
 	}
 
 	componentWillMount() {
-		profileProvider.getUserProfile().on('value', userProfileSnapshot => {
+		profileProvider.getUserProfile().then((user) => {
 			this.setState({
-				userProfile: JSON.parse(JSON.stringify(userProfileSnapshot.val()))
+				userProfile: user
         	}, () => {
 				this.validateUserProfileForm();
 			});
@@ -154,6 +154,15 @@ export class EditProfile extends Component {
 			profileProvider.updateUserProfile(name, location, photo).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.dismissModal();
+					/* Toast notification */
+					this.props.navigator.showInAppNotification({
+						screen: 'component.Toast', 
+						position: 'bottom', 
+						passProps: {
+							message: "Your profile has been updated."
+						}, 
+						autoDismissTimerSec: 3
+					});
 				});
 			}, error => {
 				Loading.dismiss().then(() => {
@@ -166,6 +175,8 @@ export class EditProfile extends Component {
 	render() {
 		
 		return (
+			
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			
 			<Container>
 			
@@ -241,6 +252,8 @@ export class EditProfile extends Component {
 				</View> }
 			
 			</Container>
+
+			</TouchableWithoutFeedback>
 			
 		);
 		

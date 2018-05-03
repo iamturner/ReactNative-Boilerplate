@@ -49,9 +49,11 @@ class LoadingComponent extends React.Component {
 	
 	render() {
         return (
-			<View style={styles.loader}>
-				<ActivityIndicator color="#69717d" />
-				{ this.props.text && <Text style={styles.text}>{ this.props.text }</Text> }
+			<View style={styles.container}>
+				<View style={styles.loader}>
+					<ActivityIndicator color="#69717d" />
+					{ this.props.text && <Text style={styles.text}>{ this.props.text }</Text> }
+				</View>
 			</View>
         )
     }
@@ -59,6 +61,10 @@ class LoadingComponent extends React.Component {
 }
 
 const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row', 
+		justifyContent: 'center'
+	}, 
 	loader: {
 		backgroundColor: '#f8f8f8', 
 		justifyContent: 'center', 

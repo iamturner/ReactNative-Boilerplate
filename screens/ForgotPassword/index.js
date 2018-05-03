@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { View, Button, Input, Text, Container, Colors, Loading } from './../../theme';
 import authProvider from './../../providers/auth';
 
@@ -53,6 +53,15 @@ export class ForgotPassword extends Component {
 			authProvider.recoverPassword(this.recoverPasswordForm.email).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.dismissModal();
+					/* Toast notification */
+					this.props.navigator.showInAppNotification({
+						screen: 'component.Toast', 
+						position: 'bottom', 
+						passProps: {
+							message: "A reset link has been sent to your email."
+						}, 
+						autoDismissTimerSec: 3
+					});
 				});
 			}, error => {
 				Loading.dismiss().then(() => {
@@ -68,10 +77,10 @@ export class ForgotPassword extends Component {
 		
 		return (
 			
+			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+			
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-						
 				<Container>
 
 					<View style={{ marginTop: 20, paddingHorizontal: 16 }}>
@@ -86,12 +95,18 @@ export class ForgotPassword extends Component {
 							<Input  
 								keyboardType="email-address" 
 								autoCapitalize="none"
-								returnKeyType={"next"}
 								onChangeText={(value) => {
 									this.recoverPasswordForm.email = value, 
 									this.validateRecoverPasswordForm()
 								}}
-								autoCorrect={false}>
+								autoCorrect={false}
+								returnKeyType={"go"}
+								enablesReturnKeyAutomatically={true}
+								onSubmitEditing={() => {
+									if (this.state.valid) {
+										this.recoverPassword();
+									}
+								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Email</Text>
 								</Input.Before>
@@ -109,11 +124,11 @@ export class ForgotPassword extends Component {
 					</View>
 			
 				</Container>
-			
-			</KeyboardAvoidingView>
 					
 			</TouchableWithoutFeedback>
 			
+			</KeyboardAvoidingView>
+						 
 		);
 		
 	}
