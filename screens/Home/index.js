@@ -27,33 +27,42 @@ export class Home extends Component {
 	}
 	
 	logOut() {
-		if (Platform.OS === 'ios') {
-			ActionSheetIOS.showActionSheetWithOptions({
-				title: 'Are you sure you want to sign out?', 
-				options: ['Sign Out', 'Cancel'],
-				destructiveButtonIndex: 0,
-				cancelButtonIndex: 1,
-			}, (buttonIndex) => {
-				if (buttonIndex === 0) { 
-					authProvider.logoutUser();
-					this.props.navigator.resetTo({
-						screen: 'screen.Login',
-						title: 'Login', 
-						animated: false, 
-						navigatorStyle: {
-							navBarTextColor: Colors.primary, 
-							navBarBackgroundColor: '#f8f8f8', 
-							navBarNoBorder: true
+		const confirm = () => {
+			return new Promise((resolve, reject) => {
+				if (Platform.OS === 'ios') {
+					ActionSheetIOS.showActionSheetWithOptions({
+						title: 'Are you sure you want to sign out?', 
+						options: ['Sign Out', 'Cancel'],
+						destructiveButtonIndex: 0,
+						cancelButtonIndex: 1,
+					}, (buttonIndex) => {
+						if (buttonIndex === 0) { 
+							resolve();
 						}
 					});
+				} else {
+					Alert.alert('Sign Out', 'Are you sure you want to sign out?', [{
+						text: 'Cancel', onPress: () => {/* Cancelled */}, style: 'cancel'}, {
+						text: 'OK', onPress: () => {
+							resolve();
+						}
+					}], { cancelable: false });
 				}
 			});
-		} else {
-			Alert.alert('Sign Out', 'Are you sure you want to sign out?', [{
-				text: 'Cancel', onPress: () => {/* Cancelled */}, style: 'cancel'}, {
-				text: 'OK', onPress: () => authProvider.logoutUser()
-			}], { cancelable: false });
 		}
+		confirm().then(() => {
+			authProvider.logoutUser();
+			this.props.navigator.resetTo({
+				screen: 'screen.Login',
+				title: 'Login', 
+				animated: false, 
+				navigatorStyle: {
+					navBarTextColor: Colors.primary, 
+					navBarBackgroundColor: '#f8f8f8', 
+					navBarNoBorder: true
+				}
+			});
+		});
 	}
 
 	render() {

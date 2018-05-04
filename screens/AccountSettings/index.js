@@ -28,47 +28,52 @@ export class AccountSettings extends Component {
 	}
 	
 	deleteAccount() {
-		/* User must reauthenticate with Firebase before deleting account */
-		if (Platform.OS === 'ios') {
-			AlertIOS.prompt(
-				'Password Confirmation',
-				'Please confirm your password to delete your account',
-				password => {
-					this.actionDeleteAccount(password);
-				}, 
-				'secure-text'
-			);
-		} else {
-			prompt(
-				'Password Confirmation',
-				'Please confirm your password to delete your account', [{
-					text: 'Cancel', onPress: () => {/* Cancelled */}, style: 'cancel'}, {
-					text: 'OK', onPress: password => this.actionDeleteAccount(password)
-				}], { 
-					type: 'secure-text', 
-					cancelable: false 
-				});
-		}
-	}
-	
-	actionDeleteAccount(password) {
-		Loading.show().then(() => {
-			authProvider.deleteAccount(password).then(() => {
-				Loading.dismiss().then(() => {
-					this.props.navigator.resetTo({
-						screen: 'screen.Login',
-						title: 'Login', 
-						animated: false, 
-						navigatorStyle: {
-							navBarTextColor: Colors.primary, 
-							navBarBackgroundColor: '#f8f8f8', 
-							navBarNoBorder: true
+		const confirm = () => {
+			return new Promise((resolve, reject) => {
+				if (Platform.OS === 'ios') {
+					AlertIOS.prompt(
+						'Password Confirmation',
+						'Please confirm your password to delete your account',
+						password => {
+							resolve(password);
+						}, 
+						'secure-text'
+					);
+				} else {
+					prompt(
+						'Password Confirmation',
+						'Please confirm your password to delete your account', [{
+							text: 'Cancel', onPress: () => {/* Cancelled */}, style: 'cancel'}, {
+							text: 'OK', onPress: password => {
+								resolve(password)
+							}
+						}], { 
+							type: 'secure-text', 
+							cancelable: false 
 						}
+					);
+				}
+			});
+		}
+		confirm().then((password) => {
+			Loading.show().then(() => {
+				authProvider.deleteAccount(password).then(() => {
+					Loading.dismiss().then(() => {
+						this.props.navigator.resetTo({
+							screen: 'screen.Login',
+							title: 'Login', 
+							animated: false, 
+							navigatorStyle: {
+								navBarTextColor: Colors.primary, 
+								navBarBackgroundColor: '#f8f8f8', 
+								navBarNoBorder: true
+							}
+						});
 					});
-				});
-			}, error => {
-				Loading.dismiss().then(() => {
-					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
+				}, error => {
+					Loading.dismiss().then(() => {
+						Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
+					});
 				});
 			});
 		});
