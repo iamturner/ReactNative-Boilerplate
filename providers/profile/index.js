@@ -7,7 +7,7 @@ let user = {
 };
 
 module.exports = {
-
+	
 	getUserProfile: () => {
 		// Return user
 		return new Promise((resolve, reject) => {

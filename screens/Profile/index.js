@@ -28,7 +28,7 @@ export class Profile extends Component {
         	});
 		});
 	}
-	
+
 	onNavigatorEvent(event) {
 		/* Check if event is a button press */
 		if (event.type == 'NavBarButtonPress') {
@@ -46,7 +46,7 @@ export class Profile extends Component {
 					passProps: {
 						onUpdatedProfile: (data) => {
 							this.setState({
-								userProfile: data.userProfile
+								userProfile: data
 							});
 						}
 					}

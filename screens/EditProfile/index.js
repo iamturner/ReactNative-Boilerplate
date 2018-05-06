@@ -33,7 +33,7 @@ export class EditProfile extends Component {
 	componentWillMount() {
 		profileProvider.getUserProfile().then((user) => {
 			this.setState({
-				userProfile: user
+				userProfile: JSON.parse(JSON.stringify(user))
         	}, () => {
 				this.validateUserProfileForm();
 			});
@@ -153,6 +153,8 @@ export class EditProfile extends Component {
 		Loading.show({ text: 'Saving...' }).then(() => {
 			profileProvider.updateUserProfile(name, location, photo).then(() => {
 				Loading.dismiss().then(() => {
+					this.props.onUpdatedProfile(this.state.userProfile);
+					/* Close modal */
 					this.props.navigator.dismissModal();
 					/* Toast notification */
 					this.props.navigator.showInAppNotification({
