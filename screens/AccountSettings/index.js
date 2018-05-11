@@ -101,7 +101,7 @@ export class AccountSettings extends Component {
 				</List>
 			
 				<View style={{ marginTop: 24, paddingHorizontal: 16 }}>
-					<Text style={{ fontSize: 14, color: Colors.text }}>Some sort of warning about deleting your account.</Text>
+					<Text style={{ fontSize: 14 }}>Some sort of warning about deleting your account.</Text>
 				</View>
 			
 				<Button style={{ marginTop: 12, borderRadius: 0, backgroundColor: 'white' }} onPress={() => this.deleteAccount()}>

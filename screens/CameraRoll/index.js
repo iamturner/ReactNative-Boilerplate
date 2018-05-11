@@ -135,6 +135,6 @@ const styles = StyleSheet.create({
 	}, 
 	cameraIcon: {
 		alignSelf: 'center', 
-		color: Colors.text
+		color: Colors.dark
 	}
 });

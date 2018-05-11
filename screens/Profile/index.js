@@ -77,7 +77,7 @@ export class Profile extends Component {
 					</View> }
 			
 					<View style={{ marginTop: 20, paddingHorizontal: 16 }}>
-						<Text style={{ fontSize: 14, color: Colors.text }}>Personal Information</Text>
+						<Text style={{ fontSize: 14 }}>Personal Information</Text>
 					</View>
 
 					<List style={{ marginTop: 10 }}>

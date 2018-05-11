@@ -23,6 +23,6 @@ export class Text extends React.Component {
 const styles = StyleSheet.create({
 	text: {
 		fontSize: 16, 
-		color: Colors.primary
+		color: Colors.dark
 	}
 });

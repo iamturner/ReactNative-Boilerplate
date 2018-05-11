@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Container, Colors, Loading } from './../../theme';
+import { View, Button, Input, Text, Container, Loading } from './../../theme';
 import authProvider from './../../providers/auth';
 
 export class ForgotPassword extends Component {
@@ -84,7 +84,7 @@ export class ForgotPassword extends Component {
 				<Container>
 
 					<View style={{ marginTop: 20, paddingHorizontal: 16 }}>
-						<Text style={{ fontSize: 14, color: Colors.text }}>Please enter your email address and we will send you a link to reset your password.</Text>
+						<Text style={{ fontSize: 14 }}>Please enter your email address and we will send you a link to reset your password.</Text>
 					</View>
 					
 					{/* Inputs */}
