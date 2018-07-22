@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { View, Button, Input, Text, Colors, Container, Loading } from './../../theme';
-import authProvider from './../../providers/auth';
+import authActions from './../../actions/auth';
 
 export class LoginWithEmail extends Component {
 
@@ -48,7 +48,7 @@ export class LoginWithEmail extends Component {
 		let email = this.loginWithEmailForm.email;
 		let password = this.loginWithEmailForm.password;
 		Loading.show().then(() => {
-			authProvider.loginWithEmail(email, password).then(() => {
+			authActions.loginWithEmail(email, password).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.resetTo({
 						screen: 'screen.Home',

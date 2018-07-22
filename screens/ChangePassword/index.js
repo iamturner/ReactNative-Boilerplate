@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { View, Button, Input, Text, Container, Loading } from './../../theme';
-import authProvider from "./../../providers/auth";
+import authActions from "./../../actions/auth";
 
 export class ChangePassword extends Component {
 
@@ -36,7 +36,7 @@ export class ChangePassword extends Component {
 		let currentPassword = this.changePasswordForm.current;
 		let newPassword = this.changePasswordForm.new;
 		Loading.show().then(() => {
-			authProvider.updatePassword(currentPassword, newPassword).then(() => {
+			authActions.updatePassword(currentPassword, newPassword).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.pop();
 					/* Toast notification */

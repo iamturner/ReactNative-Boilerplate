@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, AlertIOS, Alert } from 'react-native';
 import { View, Button, List, Text, Colors, Container, Loading } from './../../theme';
-import authProvider from './../../providers/auth';
+import authActions from './../../actions/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import prompt from 'react-native-prompt-android';
 
@@ -57,7 +57,7 @@ export class AccountSettings extends Component {
 		}
 		confirm().then((password) => {
 			Loading.show().then(() => {
-				authProvider.deleteAccount(password).then(() => {
+				authActions.deleteAccount(password).then(() => {
 					Loading.dismiss().then(() => {
 						this.props.navigator.resetTo({
 							screen: 'screen.Login',

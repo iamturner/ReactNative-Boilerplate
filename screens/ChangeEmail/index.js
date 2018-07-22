@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, AlertIOS } from 'react-native';
 import { View, Button, Input, Text, Container, Loading } from './../../theme';
-import authProvider from "./../../providers/auth";
+import authActions from "./../../actions/auth";
 import prompt from 'react-native-prompt-android';
 
 export class ChangeEmail extends Component {
@@ -28,7 +28,7 @@ export class ChangeEmail extends Component {
 			return false;
 		}
 		let newEmail = this.changeEmailForm.newEmail;
-		/* User must reauthenticate with Firebase before changing their email */
+		/* User should reauthenticate before changing their email */
 		if (Platform.OS === 'ios') {
 			AlertIOS.prompt(
 				'Password Confirmation',
@@ -53,7 +53,7 @@ export class ChangeEmail extends Component {
 	
 	actionChangeEmail(newEmail, password) {
 		Loading.show().then(() => {
-			authProvider.updateEmail(newEmail, password).then(() => {
+			authActions.updateEmail(newEmail, password).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.pop();
 					/* Toast notification */

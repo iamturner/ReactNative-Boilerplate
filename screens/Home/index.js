@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, ActionSheetIOS, Alert } from 'react-native';
 import { View, Button, List, Text, Colors, Container } from './../../theme';
-import authProvider from './../../providers/auth';
+import authActions from './../../actions/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export class Home extends Component {
@@ -51,7 +51,7 @@ export class Home extends Component {
 			});
 		}
 		confirm().then(() => {
-			authProvider.logoutUser();
+			authActions.logoutUser();
 			this.props.navigator.resetTo({
 				screen: 'screen.Login',
 				title: 'Login', 

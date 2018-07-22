@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { View, Button, Input, Text, Container, Loading } from './../../theme';
-import authProvider from './../../providers/auth';
+import authActions from './../../actions/auth';
 
 export class ForgotPassword extends Component {
 
@@ -50,7 +50,7 @@ export class ForgotPassword extends Component {
 			return false;
 		}
 		Loading.show().then(() => {
-			authProvider.recoverPassword(this.recoverPasswordForm.email).then(() => {
+			authActions.recoverPassword(this.recoverPasswordForm.email).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.dismissModal();
 					/* Toast notification */

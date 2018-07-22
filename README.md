@@ -32,6 +32,16 @@ $ npm install
 $ react-native link
 ```
 
+### Rename App (optional)
+
+To rename the app instead of 'Starter',  run the following commands.
+
+```sh
+$ npm install react-native-rename -g
+
+$ react-native-rename "NEW APP NAME" -b com.bundle.identifier
+```
+
 ### iOS
 
 On the command prompt run the following commands

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { View, Button, Input, Text, Colors, Container, Loading } from './../../theme';
-import authProvider from './../../providers/auth';
+import authActions from './../../actions/auth';
 
 export class Register extends Component {
 
@@ -39,7 +39,7 @@ export class Register extends Component {
 		let email = this.registerForm.email;
 		let password = this.registerForm.password;
 		Loading.show().then(() => {
-			authProvider.register(name, email, password).then(() => {
+			authActions.register(name, email, password).then(() => {
 				Loading.dismiss().then(() => {
 					this.props.navigator.resetTo({
 						screen: 'screen.Home',
