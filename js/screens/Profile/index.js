@@ -1,24 +1,26 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, ActivityIndicator, Image, Button as RNButton } from 'react-native';
 import { View, List, Text, Colors, Container } from './../../theme';
 import profileActions from './../../actions/profile';
 
 export class Profile extends Component {
-
-	static navigatorButtons = {
-		rightButtons: [{
-			title: 'Edit', 
-			id: 'edit'
-		}]
-	}
+	
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Profile',
+			headerRight: (
+				<RNButton
+					title="Edit" 
+					onPress={() => navigation.navigate('EditProfile', {  onUpdatedProfile: navigation.getParam('updateProfile') })}/>
+			)
+		};
+	};
 	
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
 			userProfile: null
         }
-		/* Listen for nav bar events, (e.g. clicking the 'Edit' button) */
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentWillMount() {
@@ -29,32 +31,14 @@ export class Profile extends Component {
 		});
 	}
 
-	onNavigatorEvent(event) {
-		/* Check if event is a button press */
-		if (event.type == 'NavBarButtonPress') {
-			/* Check ID of button pressed */
-			if (event.id == 'edit') {
-				/* Open Modal */
-				this.props.navigator.showModal({
-					screen: 'screen.EditProfile',
-					title: 'Edit Profile', 
-					navigatorStyle: {
-						navBarTextColor: Colors.primary, 
-						navBarBackgroundColor: '#f8f8f8', 
-						navBarNoBorder: true
-					}, 
-					passProps: {
-						onUpdatedProfile: (data) => {
-							this.setState({
-								userProfile: data
-							});
-						}
-					}
-				});
-			}
-			
-		}
-		
+	componentDidMount() {
+		this.props.navigation.setParams({ updateProfile: this.updateProfile });
+	}
+
+	updateProfile = (data) => {
+		this.setState({
+			userProfile: data
+		});
 	}
 
 	render() {

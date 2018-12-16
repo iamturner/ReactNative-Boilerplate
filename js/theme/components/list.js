@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View } from 'react-native';
+import { Colors } from './../variables/colors';
 
 export class List extends React.Component {
     
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
 	}, 
 	item: {
 		borderBottomWidth: 1, 
-		borderBottomColor: '#ddd', 
+		borderBottomColor: Colors.light, 
 		paddingRight: 16
 	}
 });

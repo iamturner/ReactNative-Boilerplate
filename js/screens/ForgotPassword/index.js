@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Container, Loading } from './../../theme';
+import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, Button as RNButton } from 'react-native';
+import { View, Button, Input, Text, Container, Loading, Toast } from './../../theme';
 import authActions from './../../actions/auth';
 
 export class ForgotPassword extends Component {
 
-	static navigatorButtons = {
-		leftButtons: [{
-			title: 'Cancel', 
-			id: 'cancel'
-		}]
-	}
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Forgot Password',
+			headerLeft: (
+				<RNButton
+					title="Cancel" 
+					onPress={() => navigation.pop()}/>
+			)
+		};
+	};
 	
 	constructor(props, context) {
 		super(props, context);
@@ -21,21 +25,6 @@ export class ForgotPassword extends Component {
 			email: null
 		}
 		this.refs;
-		/* Listen for nav bar events, (e.g. clicking the 'Cancel' button) */
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
-	}
-
-	onNavigatorEvent(event) {
-		/* Check if event is a button press */
-		if (event.type == 'NavBarButtonPress') {
-			/* Check ID of button pressed */
-			if (event.id == 'cancel') {
-				/* Dismiss Modal */
-				this.props.navigator.dismissModal();
-			}
-			
-		}
-		
 	}
 	
 	validateRecoverPasswordForm() {
@@ -49,26 +38,17 @@ export class ForgotPassword extends Component {
 		if (!this.state.valid) {
 			return false;
 		}
-		Loading.show().then(() => {
-			authActions.recoverPassword(this.recoverPasswordForm.email).then(() => {
-				Loading.dismiss().then(() => {
-					this.props.navigator.dismissModal();
-					/* Toast notification */
-					this.props.navigator.showInAppNotification({
-						screen: 'component.Toast', 
-						position: 'bottom', 
-						passProps: {
-							message: "A reset link has been sent to your email."
-						}, 
-						autoDismissTimerSec: 3
-					});
-				});
-			}, error => {
-				Loading.dismiss().then(() => {
-					setTimeout(() => {
-						Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
-					}, 10);
-				});
+		Loading.show();
+		authActions.recoverPassword(this.recoverPasswordForm.email).then(() => {
+			Loading.dismiss();
+			this.props.navigation.pop();
+			/* Toast notification */
+			Toast.show("A reset link has been sent to your email.");
+		}, error => {
+			Loading.dismiss().then(() => {
+				setTimeout(() => {
+					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
+				}, 10);
 			});
 		});
 	}
@@ -77,20 +57,20 @@ export class ForgotPassword extends Component {
 		
 		return (
 			
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-			
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-			
-				<Container>
+
+			<Container>
+
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
 
 					<View style={{ marginTop: 20, paddingHorizontal: 16 }}>
 						<Text style={{ fontSize: 14 }}>Please enter your email address and we will send you a link to reset your password.</Text>
 					</View>
-					
+
 					{/* Inputs */}
 
 					<View padding style={{ flex: 1 }}>
-			
+
 						<View style={{ marginBottom: 16 }}>
 							<Input  
 								keyboardType="email-address" 
@@ -113,21 +93,17 @@ export class ForgotPassword extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid) && <Button disabled>
+						<Button disabled={!this.state.valid} onPress={() => this.recoverPassword()}>
 							<Button.Text>Submit</Button.Text>
-						</Button> }
-							
-						{ (this.state.valid) && <Button onPress={() => this.recoverPassword()}>
-							<Button.Text>Submit</Button.Text>
-						</Button> }
+						</Button>
 
 					</View>
-			
-				</Container>
+
+				</KeyboardAvoidingView>
+
+			</Container>
 					
 			</TouchableWithoutFeedback>
-			
-			</KeyboardAvoidingView>
 						 
 		);
 		

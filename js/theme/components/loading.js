@@ -1,69 +1,98 @@
 import React, { Component } from 'react';
-import { StyleSheet, ActivityIndicator, Text } from 'react-native';
-import { Navigation } from 'react-native-navigation';
+import { StyleSheet, ActivityIndicator, Text, Animated } from 'react-native';
 import { View } from './../';
 
-// Register Loading Component to navigation
-Navigation.registerComponent('component.Loading', () => LoadingComponent);
+export class Loading extends React.Component {
+	
+	static show (callback) {
 
-module.exports = {
-    
-    show: (opts = {}) => {
-		
-		return new Promise((resolve, reject) => {
-			// Show Loading Component as Lightbox
-			Navigation.showLightBox({
-				screen: 'component.Loading', 
-				passProps: opts, 
-				style: {
-					backgroundBlur: 'none', 
-					backgroundColor: '#00000030', 
-					tapBackgroundToDismiss: false
+		_loading.setState({
+			display: true
+		}, () => {
+			
+			Animated.parallel([
+				Animated.timing(_loading.animateLoading.opacity, {
+					toValue: 1,
+					duration: 100
+				})
+			]).start(() => {
+				
+				if (typeof callback == 'function') {
+					callback()
 				}
 			});
 			
-			return resolve();
-
-		});
+		})
 		
-	}, 
+	}
 	
-	dismiss: () => {
+	static dismiss (callback) {
+
+		Animated.parallel([
+			Animated.timing(_loading.animateLoading.opacity, {
+				toValue: 0,
+				duration: 100
+			})
+		]).start(() => {
 		
-		return new Promise((resolve, reject) => {
-			// Dismiss Lightbox
-			Navigation.dismissLightBox();
+			_loading.setState({
+				display: false
+			}, () => {
+				
+				if (typeof callback == 'function') {
+					callback()
+				}
+			})
 			
-			return resolve();
 		});
 		
 	}
-    
-}
-
-class LoadingComponent extends React.Component {
 	
 	constructor(props, context) {
         super(props, context);
+		
+		this.state = {
+			display: false
+		}
+		
+		this.animateLoading = {
+            opacity: new Animated.Value(0)
+        }
+		
+		_loading = this;
+		
     }
 	
 	render() {
-        return (
-			<View style={styles.container}>
-				<View style={styles.loader}>
-					<ActivityIndicator color="#69717d" />
-					{ this.props.text && <Text style={styles.text}>{ this.props.text }</Text> }
-				</View>
-			</View>
-        )
+		
+		if (this.state.display) {
+			
+			return (
+				<Animated.View style={[styles.container, { opacity: this.animateLoading.opacity } ]}>
+					<View style={styles.loader}>
+						<ActivityIndicator color="#69717d" />
+					</View>
+				</Animated.View>
+			)
+		}
+		else {
+			
+			return (
+				<View />
+			)
+		}
+		
     }
 	
 }
 
 const styles = StyleSheet.create({
 	container: {
+		...StyleSheet.absoluteFillObject, 
 		flexDirection: 'row', 
-		justifyContent: 'center'
+		alignItems: 'center', 
+		justifyContent: 'center', 
+		backgroundColor: 'rgba(20,20,20,0.7)'
 	}, 
 	loader: {
 		backgroundColor: '#f8f8f8', 

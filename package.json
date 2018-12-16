@@ -7,19 +7,21 @@
     "test": "jest"
   },
   "dependencies": {
-    "react": "^16.3.0",
-    "react-native": "^0.55.0", 
-	"react-native-navigation": "^1.1.300",
-	"react-native-prompt-android": "^0.3.1",
-	"react-native-vector-icons": "^4.4.2",
-	"react-native-image-picker": "^0.26.7", 
-    "react-native-image-resizer": "^1.0.0"
+    "moment": "^2.23.0",
+    "react": "16.6.1",
+    "react-native": "0.57.7",
+    "react-native-gesture-handler": "^1.0.10",
+    "react-native-image-picker": "^0.26.7",
+    "react-native-image-resizer": "^1.0.0",
+    "react-native-prompt-android": "^0.3.1",
+    "react-native-vector-icons": "^4.4.2",
+    "react-navigation": "^3.0.3"
   },
   "devDependencies": {
-    "babel-jest": "22.0.4",
-    "babel-preset-react-native": "4.0.0",
-    "jest": "22.0.4",
-    "react-test-renderer": "16.0.0"
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.50.0",
+    "react-test-renderer": "16.6.1"
   },
   "jest": {
     "preset": "react-native"

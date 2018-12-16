@@ -13,6 +13,15 @@ export class Button extends React.Component {
 	}
 	
     render() {
+		
+		const { children } = this.props;
+		
+		/* Pass props to children */
+		const childrenWithProps = React.Children.map(children, child => 
+			React.cloneElement(child, {
+		  		example: 'Example'
+			}));
+		
         return (
 			<TouchableOpacity 
 				{...this.props}
@@ -24,7 +33,7 @@ export class Button extends React.Component {
 				]} 
 				activeOpacity={this.props.disabled ? 0.4 : 0.8}>
 				<View>
-					{ this.props.children }
+					{ childrenWithProps }
 				</View>
 			</TouchableOpacity>
         )
@@ -57,7 +66,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16, 
 		alignItems: 'center', 
 		justifyContent: 'center', 
-		borderRadius: 4, 
+		borderRadius: 6, 
 		marginVertical: 2
 	}, 
 	buttonOutline: {

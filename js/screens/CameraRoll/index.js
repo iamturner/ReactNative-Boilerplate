@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, Image, ActivityIndicator, CameraRoll, ScrollView, Dimensions } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity, Image, ActivityIndicator, CameraRoll, ScrollView, Dimensions, Button as RNButton } from 'react-native';
 import { View, Container, Colors } from './../../theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker';
@@ -7,12 +7,16 @@ import ImageResizer from 'react-native-image-resizer';
 
 export class CameraRollPage extends Component {
 
-	static navigatorButtons = {
-		leftButtons: [{
-			title: 'Cancel', 
-			id: 'cancel'
-		}]
-	}
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Photos',
+			headerLeft: (
+				<RNButton
+					title="Cancel" 
+					onPress={() => navigation.pop()}/>
+			)
+		};
+	};
 	
 	constructor(props, context) {
 		super(props, context);
@@ -20,7 +24,7 @@ export class CameraRollPage extends Component {
 			photos: null
         };
 		/* Listen for nav bar events, (e.g. clicking the 'Cancel' button) */
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+		//this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 	
 	componentWillMount() {
@@ -63,10 +67,11 @@ export class CameraRollPage extends Component {
 				// Handle error
 			});	
 		}
-		this.props.onSelectedPhoto({
-			photo: photo != null ? photo.uri : null
-		});
-		this.props.navigator.dismissModal();
+		/* Publish profile update */
+		const selectedPhoto = this.props.navigation.getParam('onSelectedPhoto');
+		selectedPhoto(photo != null ? photo.uri : null);
+		/* Close modal */
+		this.props.navigation.pop();
 	}
 
 	takePicture() {
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
 	}, 
 	photo: {
 		width: (Dimensions.get('window').width)/3, 
-		height: (Dimensions.get('window').width)/3, 
+		aspectRatio: 1, 
 		justifyContent: 'center', 
 		padding: 1
 	}, 

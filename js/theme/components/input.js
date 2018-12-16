@@ -95,7 +95,7 @@ export class InputAfter extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: 'white', 
-		borderRadius: 4, 
+		borderRadius: 6, 
 		flexDirection: 'row', 
 		overflow: 'hidden', 
 		paddingHorizontal: 16, 

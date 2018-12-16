@@ -5,9 +5,10 @@ export var { Input } = require('./components/input');
 export var { List } = require('./components/list');
 export var { Text } = require('./components/text');
 export var { Container } = require('./components/container');
-
-export var Loading = require('./components/loading');
-export var Toast = require('./components/toast');
+export var { InfiniteScroll } = require('./components/infinite-scroll');
+export var { ActionSheet } = require('./components/actionSheet');
+export var { Loading } = require('./components/loading');
+export var { Toast } = require('./components/toast');
 
 /* Variables */
 export var { Colors } = require('./variables/colors');

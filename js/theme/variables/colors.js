@@ -1,7 +1,7 @@
 export var Colors = {
-	primary: '#33383f', 
+	primary: '#3d434e', 
 	secondary: '#516578', 
 	danger: '#f53d3d', 
-	light: '#e5edf1', 
+	light: '#deedf3', 
 	dark: '#28404f'
 }

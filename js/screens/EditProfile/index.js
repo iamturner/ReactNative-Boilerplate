@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Alert, Image, ActionSheetIOS, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { View, Button, List, Input, Text, Container, Colors, Loading } from './../../theme';
+import { Platform, StyleSheet, Alert, Image, TouchableWithoutFeedback, Keyboard, Button as RNButton } from 'react-native';
+import { View, Button, List, Input, Text, Container, Colors, Loading, Toast, ActionSheet } from './../../theme';
 import profileActions from './../../actions/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export class EditProfile extends Component {
-
-	static navigatorButtons = {
-		leftButtons: [{
-			title: 'Cancel', 
-			id: 'cancel'
-		}], 
-		rightButtons: [{
-			title: 'Save', 
-			id: 'save', 
-			buttonFontSize: 18, 
-			buttonFontWeight: 'bold'
-		}]
-	}
+	
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Edit Profile',
+			headerLeft: (
+				<RNButton
+					title="Cancel" 
+					onPress={() => navigation.pop()}/>
+			),
+			headerRight: (
+				<RNButton
+					title="Save" 
+					onPress={navigation.getParam('updateProfile')}/>
+			)
+		};
+	};
 	
 	constructor(props, context) {
 		super(props, context);
@@ -26,8 +29,6 @@ export class EditProfile extends Component {
 			userProfile: null
         }
 		this.inputs = {};
-		/* Listen for nav bar events, (e.g. clicking the 'Cancel' button) */
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 
 	componentWillMount() {
@@ -40,6 +41,10 @@ export class EditProfile extends Component {
 		});
 	}
 	
+	componentDidMount() {
+		this.props.navigation.setParams({ updateProfile: this.updateProfile });
+	}
+
 	onNavigatorEvent(event) {
 		/* Check if event is a button press */
 		if (event.type == 'NavBarButtonPress') {
@@ -70,37 +75,17 @@ export class EditProfile extends Component {
 			/* Display photo options */
 			const confirm = () => {
 				return new Promise((resolve, reject) => {
-					/* Display action sheet (iOS) */
-					if (Platform.OS === 'ios') {
-						ActionSheetIOS.showActionSheetWithOptions({
-							options: ['Choose New Photo', 'Delete Photo', 'Cancel'],
-							destructiveButtonIndex: 1,
-							cancelButtonIndex: 2,
-						}, (buttonIndex) => {
-							switch (buttonIndex) {
-								case 0 :
-									resolve();
-									break;
-								case 1 :
-									/* Remove user's profile photo*/
-									let profile = this.state.userProfile;
-										profile.photo = null;
-									this.setState({
-										userProfile: profile
-									});
-									
-									reject();
-									break;
-								case 2 :
-									reject();
-									break;
-							}
-						});
-					} 
-					/* Display alert (Android) */
-					else {
-						Alert.alert('Profile Photo', 'Edit your profile photo.', [{
-							text: 'Delete', onPress: () => {
+					/* Display action sheet */
+					ActionSheet.show({
+						options: ['Choose New Photo', 'Delete Photo', 'Cancel'], 
+						destructiveButtonIndex: 1,
+						cancelButtonIndex: 2
+					}).then((buttonIndex) => {
+						switch (buttonIndex) {
+							case 0 :
+								resolve();
+								break;
+							case 1 :
 								/* Remove user's profile photo*/
 								let profile = this.state.userProfile;
 									profile.photo = null;
@@ -109,69 +94,48 @@ export class EditProfile extends Component {
 								});
 
 								reject();
-							}, style: 'destructive'}, {
-							text: 'Cancel', onPress: () => {
+								break;
+							case 2 :
 								reject();
-							}, style: 'cancel'}, {
-							text: 'Choose', onPress: () => {
-								resolve();
-							}
-						}], { cancelable: false });
-					}
+								break;
+						}
+					});
 				});
 			}
 			await confirm();
 		}
 		/* Open Modal */
-		this.props.navigator.showModal({
-			screen: 'screen.CameraRoll',
-			title: 'All Photos', 
-			navigatorStyle: {
-				navBarTextColor: Colors.primary, 
-				navBarBackgroundColor: '#f8f8f8', 
-				navBarNoBorder: true
-			}, 
-			passProps: {
-				onSelectedPhoto: (data) => {
-					let profile = this.state.userProfile;
-						profile.photo = data.photo;
-					this.setState({
-						userProfile: profile
-					});
-				}
-			}
-		});
+		this.props.navigation.navigate('CameraRoll', { onSelectedPhoto: this.updatePhoto });
 	}
 
-	updateProfile() {
+	updatePhoto = (data) => {
+		let profile = this.state.userProfile;
+			profile.photo = data;
+		this.setState({
+			userProfile: profile
+		})
+	}
+
+	updateProfile = () => {
 		if (!this.state.valid) {
 			return false;
 		}
 		let name = this.state.userProfile.name;
 		let location = this.state.userProfile.location;
 		let photo = this.state.userProfile.photo;
-		Loading.show({ text: 'Saving...' }).then(() => {
-			profileActions.updateUserProfile(name, location, photo).then(() => {
-				Loading.dismiss().then(() => {
-					/* Publish profile update */
-					this.props.onUpdatedProfile(this.state.userProfile);
-					/* Close modal */
-					this.props.navigator.dismissModal();
-					/* Toast notification */
-					this.props.navigator.showInAppNotification({
-						screen: 'component.Toast', 
-						position: 'bottom', 
-						passProps: {
-							message: "Your profile has been updated."
-						}, 
-						autoDismissTimerSec: 3
-					});
-				});
-			}, error => {
-				Loading.dismiss().then(() => {
-					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
-				});
-			});
+		Loading.show();
+		profileActions.updateUserProfile(name, location, photo).then(() => {
+			Loading.dismiss();
+			/* Publish profile update */
+			const updateProfile = this.props.navigation.getParam('onUpdatedProfile');
+			updateProfile(this.state.userProfile);
+			/* Close modal */
+			this.props.navigation.pop();
+			/* Toast notification */
+			Toast.show("Your profile has been updated.");
+		}, error => {
+			Loading.dismiss();
+			Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 		});
 	}
 

@@ -1,26 +1,30 @@
 import React, { Component } from "react";
 import { AsyncStorage } from 'react-native';
-import { View, Colors } from './theme';
-import { Navigation } from 'react-native-navigation';
-import { registerScreens } from './screens';
+import { View, Text, Toast, Loading, ActionSheet } from './theme';
+import { createAppContainer } from "react-navigation";
+import { RootNavigator } from './screens';
 
-/* Check if user is authenticated */
+const AppContainer = createAppContainer(RootNavigator);
 
-AsyncStorage.getItem('loggedUser', (err, user) => {
-	Navigation.startSingleScreenApp({
-		screen: {
-			screen: (user ? 'screen.Home' : 'screen.Login'),
-			title: (user ? ' Home ' : ' Login '), 
-			navigatorStyle: {
-				navBarTextColor: Colors.primary, 
-				navBarBackgroundColor: '#f8f8f8', 
-				navBarNoBorder: true
-			}
-		}, 
-		animationType: 'none'
-	})
-});
-
-registerScreens();
+export default class App extends Component {
+	
+	constructor(props, context) {
+		super(props, context);
+	}
+	
+	render() {
+		
+		return (
+			
+			<View style={{ flex: 1 }}>
+				<AppContainer />
+				<Toast />
+				<Loading />
+				<ActionSheet />
+			</View>
+		)
+	}
+	
+}
 
 console.disableYellowBox = true;

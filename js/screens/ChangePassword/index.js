@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Container, Loading } from './../../theme';
+import { View, Button, Input, Text, Container, Loading, Toast, Colors } from './../../theme';
 import authActions from "./../../actions/auth";
 
 export class ChangePassword extends Component {
 
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Change Password'
+		};
+	};
+	
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
@@ -35,25 +41,15 @@ export class ChangePassword extends Component {
 		}
 		let currentPassword = this.changePasswordForm.current;
 		let newPassword = this.changePasswordForm.new;
-		Loading.show().then(() => {
-			authActions.updatePassword(currentPassword, newPassword).then(() => {
-				Loading.dismiss().then(() => {
-					this.props.navigator.pop();
-					/* Toast notification */
-					this.props.navigator.showInAppNotification({
-						screen: 'component.Toast', 
-						position: 'bottom', 
-						passProps: {
-							message: "Your password has been updated."
-						}, 
-						autoDismissTimerSec: 3
-					});
-				});
-			}, error => {
-				Loading.dismiss().then(() => {
-					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
-				});
-			});
+		Loading.show();
+		authActions.updatePassword(currentPassword, newPassword).then(() => {
+			Loading.dismiss();
+			this.props.navigation.pop();
+			/* Toast notification */
+			Toast.show("Your password has been updated.");
+		}, error => {
+			Loading.dismiss();
+			Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 		});
 	}
 	
@@ -61,20 +57,20 @@ export class ChangePassword extends Component {
 		
 		return (
 			
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-			
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			
-				<Container padding>
+			<Container padding>
+
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
 
 					{/* Inputs */}
 
 					<View style={{ flex: 1 }}>
-			
+
 						<View style={{ marginBottom: 16 }}>
 							<Input style={{ 
 								borderBottomWidth: 1, 
-								borderBottomColor: '#ddd', 
+								borderBottomColor: Colors.light, 
 								borderBottomLeftRadius: 0, 
 								borderBottomRightRadius: 0 }}
 								secureTextEntry={true}
@@ -86,8 +82,8 @@ export class ChangePassword extends Component {
 									this.focusNextField('new')
 								}}
 								inputRef={input => {
-                                    this.inputs['current'] = input;
-                                }}>
+									this.inputs['current'] = input;
+								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Current</Text>
 								</Input.Before>
@@ -103,8 +99,8 @@ export class ChangePassword extends Component {
 									this.validateChangePasswordForm()
 								}}
 								inputRef={input => {
-                                    this.inputs['new'] = input;
-                                }}
+									this.inputs['new'] = input;
+								}}
 								onSubmitEditing={() => {
 									if (this.state.valid) {
 										this.changePassword();
@@ -116,21 +112,17 @@ export class ChangePassword extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid) && <Button disabled>
+						<Button disabled={!this.state.valid} onPress={() => this.changePassword()}>
 							<Button.Text>Submit</Button.Text>
-						</Button> }
-							
-						{ (this.state.valid) && <Button onPress={() => this.changePassword()}>
-							<Button.Text>Submit</Button.Text>
-						</Button> }
+						</Button>
 
 					</View>
-			
-				</Container>
+
+				</KeyboardAvoidingView>
+
+			</Container>
 			
 			</TouchableWithoutFeedback>
-			
-			</KeyboardAvoidingView>
 			
 		);
 		

@@ -4,24 +4,20 @@ import { View, Button, Colors, Container } from './../../theme';
 
 export class Login extends Component {
 
+	static navigationOptions = {
+		title: 'Login'
+	};
+	
 	constructor(props, context) {
 		super(props, context);
 	}
 	
 	goToLoginWithEmail() {
-		this.props.navigator.push({
-			screen: 'screen.LoginWithEmail',
-			title: 'Login With Email', 
-			backButtonTitle: 'Back'
-		});
+		this.props.navigation.navigate('LoginWithEmail')
 	}
 	
 	goToRegister() {
-		this.props.navigator.push({
-			screen: 'screen.Register',
-			title: 'Register', 
-			backButtonTitle: 'Back'
-		});
+		this.props.navigation.navigate('Register')
 	}
 	
 	render() {

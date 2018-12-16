@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: Colors.light, 
-		borderTopWidth: 1, 
-		borderTopColor: '#dddddd'
+		//borderTopWidth: 1, 
+		//borderTopColor: '#dddddd'
 	}
 });

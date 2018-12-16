@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { View, Button, Input, Text, Colors, Container, Loading } from './../../theme';
 import authActions from './../../actions/auth';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 export class Register extends Component {
 
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Register'
+		};
+	};
+	
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
@@ -38,25 +45,17 @@ export class Register extends Component {
 		let name = this.registerForm.name;
 		let email = this.registerForm.email;
 		let password = this.registerForm.password;
-		Loading.show().then(() => {
-			authActions.register(name, email, password).then(() => {
-				Loading.dismiss().then(() => {
-					this.props.navigator.resetTo({
-						screen: 'screen.Home',
-						title: 'Home', 
-						animated: false, 
-						navigatorStyle: {
-							navBarTextColor: Colors.primary, 
-							navBarBackgroundColor: '#f8f8f8', 
-							navBarNoBorder: true
-						}
-					});
-				});
-			}, error => {
-				Loading.dismiss().then(() => {
-					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
-				});
+		Loading.show();
+		authActions.register(name, email, password).then(() => {
+			Loading.dismiss();
+			const resetAction = StackActions.reset({
+				index: 0,
+				actions: [NavigationActions.navigate({ routeName: 'Home' })],
 			});
+			this.props.navigation.dispatch(resetAction);
+		}, error => {
+			Loading.dismiss();
+			Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 		});
 	}
 	
@@ -77,7 +76,7 @@ export class Register extends Component {
 						<View style={{ marginBottom: 16 }}>
 							<Input style={{ 
 								borderBottomWidth: 1, 
-								borderBottomColor: '#ddd', 
+								borderBottomColor: Colors.light, 
 								borderBottomLeftRadius: 0, 
 								borderBottomRightRadius: 0 }}
 								autoCapitalize="words"
@@ -99,7 +98,7 @@ export class Register extends Component {
 							</Input>
 							<Input style={{ 
 								borderBottomWidth: 1, 
-								borderBottomColor: '#ddd', 
+								borderBottomColor: Colors.light, 
 								borderRadius: 0 }}
 								keyboardType="email-address" 
 								autoCapitalize="none"
@@ -143,13 +142,9 @@ export class Register extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid) && <Button disabled>
+						<Button disabled={!this.state.valid} onPress={() => this.register()}>
 							<Button.Text>Create Account</Button.Text>
-						</Button> }
-							
-						{ (this.state.valid) && <Button onPress={() => this.register()}>
-							<Button.Text>Create Account</Button.Text>
-						</Button> }
+						</Button>
 
 					</View>
 			

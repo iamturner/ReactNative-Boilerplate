@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, AlertIOS } from 'react-native';
-import { View, Button, Input, Text, Container, Loading } from './../../theme';
+import { View, Button, Input, Text, Container, Loading, Toast } from './../../theme';
 import authActions from "./../../actions/auth";
 import prompt from 'react-native-prompt-android';
 
 export class ChangeEmail extends Component {
 
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Change Email'
+		};
+	};
+	
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
@@ -29,65 +35,58 @@ export class ChangeEmail extends Component {
 		}
 		let newEmail = this.changeEmailForm.newEmail;
 		/* User should reauthenticate before changing their email */
-		if (Platform.OS === 'ios') {
-			AlertIOS.prompt(
-				'Password Confirmation',
-				'Please confirm your password to change your email address',
-				password => {
-					this.actionChangeEmail(newEmail, password);
-				}, 
-				'secure-text'
-			);
-		} else {
-			prompt(
-				'Password Confirmation',
-				'Please confirm your password to change your email address', [{
-					text: 'Cancel', onPress: () => {/* Cancelled */}, style: 'cancel'}, {
-					text: 'OK', onPress: password => this.actionChangeEmail(newEmail, password)
-				}], { 
-					type: 'secure-text', 
-					cancelable: false 
-				});
-		}
-	}
-	
-	actionChangeEmail(newEmail, password) {
-		Loading.show().then(() => {
-			authActions.updateEmail(newEmail, password).then(() => {
-				Loading.dismiss().then(() => {
-					this.props.navigator.pop();
-					/* Toast notification */
-					this.props.navigator.showInAppNotification({
-						screen: 'component.Toast', 
-						position: 'bottom', 
-						passProps: {
-							message: "Your email address has been updated."
+		const confirmPassword = () => {
+			return new Promise((resolve, reject) => {
+				if (Platform.OS === 'ios') {
+					AlertIOS.prompt(
+						'Password Confirmation',
+						'Please confirm your password to change your email address',
+						password => {
+							resolve({ email: newEmail, password: password});
 						}, 
-						autoDismissTimerSec: 3
-					});
-				});
+						'secure-text'
+					);
+				} else {
+					prompt(
+						'Password Confirmation',
+						'Please confirm your password to change your email address', [{
+							text: 'Cancel', onPress: () => {/* Cancelled */}, style: 'cancel'}, {
+							text: 'OK', onPress: password => resolve({ email: newEmail, password: password})
+						}], { 
+							type: 'secure-text', 
+							cancelable: false 
+						});
+				}
+			})
+		}
+		confirmPassword().then((resp) => {
+			Loading.show();
+			authActions.updateEmail(resp.email, resp.password).then(() => {
+				Loading.dismiss();
+				this.props.navigation.pop();
+				// Toast notification
+				Toast.show("Your email address has been updated.");
 			}, error => {
-				Loading.dismiss().then(() => {
-					Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
-				});
+				Loading.dismiss();
+				Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 			});
-		});
+		})
 	}
 	
 	render() {
 		
 		return (
 			
-			<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-			
 			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
 			
-				<Container padding>
+			<Container padding>
+
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
 
 					{/* Inputs */}
 
 					<View style={{ flex: 1 }}>
-			
+
 						<View style={{ marginBottom: 16 }}>
 							<Input 
 								keyboardType="email-address" 
@@ -113,18 +112,18 @@ export class ChangeEmail extends Component {
 						{ (!this.state.valid) && <Button disabled>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
-							
+
 						{ (this.state.valid) && <Button onPress={() => this.changeEmail()}>
 							<Button.Text>Submit</Button.Text>
 						</Button> }
 
 					</View>
-			
-				</Container>
+
+				</KeyboardAvoidingView>
+
+			</Container>
 			
 			</TouchableWithoutFeedback>
-						 
-			</KeyboardAvoidingView>
 			
 		);
 		

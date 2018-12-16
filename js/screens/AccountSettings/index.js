@@ -4,27 +4,26 @@ import { View, Button, List, Text, Colors, Container, Loading } from './../../th
 import authActions from './../../actions/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import prompt from 'react-native-prompt-android';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 export class AccountSettings extends Component {
 
+	static navigationOptions = ({ navigation }) => {
+		return {
+			headerTitle: 'Account Settings'
+		};
+	};
+	
 	constructor(props, context) {
 		super(props, context);
 	}
 	
 	goToChangeEmail() {
-		this.props.navigator.push({
-			screen: 'screen.ChangeEmail',
-			title: 'Change Email', 
-			backButtonTitle: 'Back'
-		});
+		this.props.navigation.navigate('ChangeEmail')
 	}
 	
 	goToChangePassword() {
-		this.props.navigator.push({
-			screen: 'screen.ChangePassword',
-			title: 'Change Password', 
-			backButtonTitle: 'Back'
-		});
+		this.props.navigation.navigate('ChangePassword')
 	}
 	
 	deleteAccount() {
@@ -56,25 +55,17 @@ export class AccountSettings extends Component {
 			});
 		}
 		confirm().then((password) => {
-			Loading.show().then(() => {
-				authActions.deleteAccount(password).then(() => {
-					Loading.dismiss().then(() => {
-						this.props.navigator.resetTo({
-							screen: 'screen.Login',
-							title: 'Login', 
-							animated: false, 
-							navigatorStyle: {
-								navBarTextColor: Colors.primary, 
-								navBarBackgroundColor: '#f8f8f8', 
-								navBarNoBorder: true
-							}
-						});
-					});
-				}, error => {
-					Loading.dismiss().then(() => {
-						Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
-					});
+			Loading.show();
+			authActions.deleteAccount(password).then(() => {
+				Loading.dismiss();
+				const resetAction = StackActions.reset({
+					index: 0,
+					actions: [NavigationActions.navigate({ routeName: 'Login' })],
 				});
+				this.props.navigation.dispatch(resetAction);
+			}, error => {
+				Loading.dismiss();
+				Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
 			});
 		});
 	}
