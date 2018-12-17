@@ -122,7 +122,7 @@ export class LoginWithEmail extends Component {
 								</Input>
 							</View>
 
-							 <Button disabled={!this.state.valid} onPress={() => this.loginWithEmail()}>
+							 <Button primary disabled={!this.state.valid} onPress={() => this.loginWithEmail()}>
 								<Button.Text>Sign In</Button.Text>
 							</Button>
 

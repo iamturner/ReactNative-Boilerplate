@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, Button as RNButton } from 'react-native';
+import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { View, Button, Input, Text, Container, Loading, Toast } from './../../theme';
 import authActions from './../../actions/auth';
 
@@ -9,9 +9,9 @@ export class ForgotPassword extends Component {
 		return {
 			headerTitle: 'Forgot Password',
 			headerLeft: (
-				<RNButton
-					title="Cancel" 
-					onPress={() => navigation.pop()}/>
+				<Button onPress={() => navigation.pop()}>
+					<Button.Text>Cancel</Button.Text>
+				</Button>
 			)
 		};
 	};
@@ -93,7 +93,7 @@ export class ForgotPassword extends Component {
 							</Input>
 						</View>
 
-						<Button disabled={!this.state.valid} onPress={() => this.recoverPassword()}>
+						<Button primary disabled={!this.state.valid} onPress={() => this.recoverPassword()}>
 							<Button.Text>Submit</Button.Text>
 						</Button>
 

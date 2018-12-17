@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Alert, Image, TouchableWithoutFeedback, Keyboard, Button as RNButton } from 'react-native';
+import { Platform, StyleSheet, Alert, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { View, Button, List, Input, Text, Container, Colors, Loading, Toast, ActionSheet } from './../../theme';
 import profileActions from './../../actions/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -10,14 +10,14 @@ export class EditProfile extends Component {
 		return {
 			headerTitle: 'Edit Profile',
 			headerLeft: (
-				<RNButton
-					title="Cancel" 
-					onPress={() => navigation.pop()}/>
+				<Button onPress={() => navigation.pop()}>
+					<Button.Text>Cancel</Button.Text>
+				</Button>
 			),
 			headerRight: (
-				<RNButton
-					title="Save" 
-					onPress={navigation.getParam('updateProfile')}/>
+				<Button onPress={navigation.getParam('updateProfile')}>
+					<Button.Text>Save</Button.Text>
+				</Button>
 			)
 		};
 	};
@@ -155,7 +155,7 @@ export class EditProfile extends Component {
 							{ this.state.userProfile.photo && <Image style={styles.photoImage} source={{uri: this.state.userProfile.photo}} /> }
 							<Button style={styles.photoButton} onPress={() => this.openCameraRoll()}>
 								<Button.Text>
-									<Icon name="ios-camera" size={40} style={{marginTop: 4}} />
+									<Icon name="ios-camera" size={40} color={'white'} style={{marginTop: 4}} />
 								</Button.Text>
 							</Button>
 						</View>

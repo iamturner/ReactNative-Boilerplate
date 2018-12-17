@@ -7,7 +7,7 @@ export class Login extends Component {
 	static navigationOptions = {
 		title: 'Login'
 	};
-	
+
 	constructor(props, context) {
 		super(props, context);
 	}
@@ -26,12 +26,12 @@ export class Login extends Component {
 			
 			<Container padding>
 
-				<Button onPress={() => this.goToLoginWithEmail()}>
+				<Button primary onPress={() => this.goToLoginWithEmail()}>
 					<Button.Text>Sign in with Email</Button.Text>
 				</Button>
-					
-				<Button outline style={{ marginTop: 24 }} onPress={() => this.goToRegister()}>
-					<Button.Text style={{ color: Colors.primary }}>Create New Account</Button.Text>
+				
+				<Button primary outline style={{ marginTop: 24 }} onPress={() => this.goToRegister()}>
+					<Button.Text>Create New Account</Button.Text>
 				</Button>
 
 			</Container>

@@ -22,7 +22,7 @@ export class Toast extends React.Component {
 				})
 			]).start(() => {
 
-				// Auto close after 3 seconds 
+				// Auto close after 2 seconds 
 				setTimeout(() => {
 					_toast.close();
 				}, 2000)

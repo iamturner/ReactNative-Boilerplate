@@ -109,13 +109,9 @@ export class ChangeEmail extends Component {
 							</Input>
 						</View>
 
-						{ (!this.state.valid) && <Button disabled>
+						<Button primary disabled={!this.state.valid} onPress={() => this.changeEmail()}>
 							<Button.Text>Submit</Button.Text>
-						</Button> }
-
-						{ (this.state.valid) && <Button onPress={() => this.changeEmail()}>
-							<Button.Text>Submit</Button.Text>
-						</Button> }
+						</Button>
 
 					</View>
 

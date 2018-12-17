@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, Image, ActivityIndicator, CameraRoll, ScrollView, Dimensions, Button as RNButton } from 'react-native';
-import { View, Container, Colors } from './../../theme';
+import { Platform, StyleSheet, TouchableOpacity, Image, ActivityIndicator, CameraRoll, ScrollView, Dimensions } from 'react-native';
+import { View, Container, Colors, Button } from './../../theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
@@ -11,9 +11,9 @@ export class CameraRollPage extends Component {
 		return {
 			headerTitle: 'Photos',
 			headerLeft: (
-				<RNButton
-					title="Cancel" 
-					onPress={() => navigation.pop()}/>
+				<Button onPress={() => navigation.pop()}>
+					<Button.Text>Cancel</Button.Text>
+				</Button>
 			)
 		};
 	};

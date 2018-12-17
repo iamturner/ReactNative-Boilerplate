@@ -19,7 +19,8 @@ export class Button extends React.Component {
 		/* Pass props to children */
 		const childrenWithProps = React.Children.map(children, child => 
 			React.cloneElement(child, {
-		  		example: 'Example'
+		  		primary: this.props.primary,
+				outline: this.props.outline
 			}));
 		
         return (
@@ -27,9 +28,10 @@ export class Button extends React.Component {
 				{...this.props}
 				style={[
 					styles.button, 
-					this.props.style, 
+					(this.props.primary ? styles.buttonPrimary : null), 
 					(this.props.outline ? styles.buttonOutline : null), 
-					(this.props.disabled ? styles.buttonDisabled : null)
+					(this.props.disabled ? styles.buttonDisabled : null),
+					this.props.style
 				]} 
 				activeOpacity={this.props.disabled ? 0.4 : 0.8}>
 				<View>
@@ -50,7 +52,14 @@ export class ButtonText extends React.Component {
 	render() {
 		
 		return (
-			<Text style={[styles.buttonText, this.props.style]}>
+			<Text 
+				{...this.props}
+				style={[
+					styles.buttonText, 
+					(this.props.primary ? styles.buttonTextWhite : null), 
+					(this.props.outline ? styles.buttonTextPrimary : null), 
+					this.props.style
+				]}>
 				{ this.props.children }
 			</Text>
 		)
@@ -61,14 +70,15 @@ export class ButtonText extends React.Component {
 
 const styles = StyleSheet.create({
 	button: {
-		backgroundColor: Colors.primary, 
 		height: 44, 
-		paddingHorizontal: 16, 
+		paddingHorizontal: 12,
 		alignItems: 'center', 
-		justifyContent: 'center', 
-		borderRadius: 6, 
-		marginVertical: 2
+		justifyContent: 'center',
+		borderRadius: 6
 	}, 
+	buttonPrimary: {
+		backgroundColor: Colors.primary
+	},
 	buttonOutline: {
 		backgroundColor: 'transparent', 
 		borderWidth: 1, 
@@ -78,7 +88,13 @@ const styles = StyleSheet.create({
 		opacity: 0.4
 	}, 
 	buttonText: {
-		fontSize: 16, 
+		fontSize: 17,
+		color: Platform.OS === 'ios' ? 'rgb(0,122,255)' : 'rgb(0,0,0)'
+	},
+	buttonTextWhite: {
 		color: 'white'
+	},
+	buttonTextPrimary: {
+		color: Colors.primary
 	}
 });

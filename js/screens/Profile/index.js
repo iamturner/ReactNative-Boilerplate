@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, ActivityIndicator, Image, Button as RNButton } from 'react-native';
-import { View, List, Text, Colors, Container } from './../../theme';
+import { Platform, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { View, List, Text, Colors, Container, Button } from './../../theme';
 import profileActions from './../../actions/profile';
 
 export class Profile extends Component {
@@ -9,9 +9,9 @@ export class Profile extends Component {
 		return {
 			headerTitle: 'Profile',
 			headerRight: (
-				<RNButton
-					title="Edit" 
-					onPress={() => navigation.navigate('EditProfile', {  onUpdatedProfile: navigation.getParam('updateProfile') })}/>
+				<Button onPress={() => navigation.navigate('EditProfile', {  onUpdatedProfile: navigation.getParam('updateProfile') })}>
+					<Button.Text>Edit</Button.Text>
+				</Button>
 			)
 		};
 	};
@@ -68,13 +68,13 @@ export class Profile extends Component {
 						<List.Item>
 							<View style={{ paddingVertical: 11, flexDirection: 'row' }}>
 								<Text style={{ flex: 1 }}>Name</Text>
-								<Text style={{ color: '#aeacb4' }}>{ this.state.userProfile.name }</Text>
+								<Text style={{ color: Colors.secondary }}>{ this.state.userProfile.name }</Text>
 							</View>
 						</List.Item>
 						<List.Item style={{ borderBottomWidth: 0 }}>
 							<View style={{ paddingVertical: 11, flexDirection: 'row' }}>
 								<Text style={{ flex: 1 }}>Location</Text>
-								<Text style={{ color: '#aeacb4' }}>{ this.state.userProfile.location }</Text>
+								<Text style={{ color: Colors.secondary }}>{ this.state.userProfile.location }</Text>
 							</View>
 						</List.Item>
 					</List>

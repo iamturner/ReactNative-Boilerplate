@@ -142,7 +142,7 @@ export class Register extends Component {
 							</Input>
 						</View>
 
-						<Button disabled={!this.state.valid} onPress={() => this.register()}>
+						<Button primary disabled={!this.state.valid} onPress={() => this.register()}>
 							<Button.Text>Create Account</Button.Text>
 						</Button>
 

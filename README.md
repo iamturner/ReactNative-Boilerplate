@@ -38,7 +38,7 @@ $ react-native run-ios
 
 ### Android
 
-**_Note:_** *Before running ` react-native run-android ` for the first time, open the project in Android Studio to generate local.properties file.*
+**_Note:_** *Before running ` react-native run-android ` for the first time, open the project in Android Studio to generate local.properties file, or rename the local.properties.example file included.*
 
 ```sh
 $ react-native run-android
