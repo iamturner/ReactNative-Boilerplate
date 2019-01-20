@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, SafeAreaView } from 'react-native';
-import { View, Button, Input, Text, Colors, Container, Loading } from './../../theme';
+import { View, Button, Input, Text, Colors, Container, Loading, Form } from './../../theme';
 import authActions from './../../actions/auth';
 import { StackActions, NavigationActions } from 'react-navigation';
 
@@ -19,11 +19,6 @@ export class LoginWithEmail extends Component {
 			email: null, 
 			password: null
 		}
-		this.inputs = {};
-	}
-	
-	focusNextField(key) {
-		this.inputs[key].focus();
 	}
 	
 	validateLoginWithEmailForm() {
@@ -74,8 +69,8 @@ export class LoginWithEmail extends Component {
 
 						<View style={{ flex: 1 }}>
 
-							<View style={{ marginBottom: 16 }}>
-								<Input style={{ 
+							<Form style={{ marginBottom: 16 }}>
+								<Form.Input style={{ 
 									borderBottomWidth: 1, 
 									borderBottomColor: Colors.light, 
 									borderBottomLeftRadius: 0, 
@@ -87,18 +82,12 @@ export class LoginWithEmail extends Component {
 									onChangeText={(value) => {
 										this.loginWithEmailForm.email = value, 
 										this.validateLoginWithEmailForm()
-									}}
-									onSubmitEditing={() => {
-										this.focusNextField('password')
-									}}
-									inputRef={input => {
-										this.inputs['email'] = input;
 									}}>
 									<Input.Before>
 										<Text style={{ marginRight: 24 }}>Email</Text>
 									</Input.Before>
-								</Input>
-								<Input style={{ 
+								</Form.Input>
+								<Form.Input style={{ 
 									borderTopLeftRadius: 0, 
 									borderTopRightRadius: 0 }}
 									secureTextEntry={true}
@@ -108,9 +97,6 @@ export class LoginWithEmail extends Component {
 										this.loginWithEmailForm.password = value, 
 										this.validateLoginWithEmailForm()
 									}}
-									inputRef={input => {
-										this.inputs['password'] = input;
-									}}
 									onSubmitEditing={() => {
 										if (this.state.valid) {
 											this.loginWithEmail();
@@ -119,8 +105,8 @@ export class LoginWithEmail extends Component {
 									<Input.Before>
 										<Text style={{ marginRight: 24 }}>Password</Text>
 									</Input.Before>
-								</Input>
-							</View>
+								</Form.Input>
+							</Form>
 
 							 <Button primary disabled={!this.state.valid} onPress={() => this.loginWithEmail()}>
 								<Button.Text>Sign In</Button.Text>
@@ -128,11 +114,11 @@ export class LoginWithEmail extends Component {
 
 						</View>
 
-						<Button style={{ backgroundColor: 'transparent' }} onPress={() => this.openForgotPassword()}>
-							<Button.Text style={{ color: Colors.primary }}>Forgot Password</Button.Text>
-						</Button>
-
 					</KeyboardAvoidingView>
+
+					<Button style={{ backgroundColor: 'transparent' }} onPress={() => this.openForgotPassword()}>
+						<Button.Text style={{ color: Colors.primary }}>Forgot Password</Button.Text>
+					</Button>
 
 				</SafeAreaView>
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Alert, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { View, Button, List, Input, Text, Container, Colors, Loading, Toast, ActionSheet } from './../../theme';
+import { View, Button, List, Input, Text, Container, Colors, Loading, Toast, ActionSheet, Form } from './../../theme';
 import profileActions from './../../actions/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -28,7 +28,6 @@ export class EditProfile extends Component {
 			valid: false, 
 			userProfile: null
         }
-		this.inputs = {};
 	}
 
 	componentWillMount() {
@@ -57,10 +56,6 @@ export class EditProfile extends Component {
 			}
 		}
 		
-	}
-
-	focusNextField(key) {
-		this.inputs[key].focus();
 	}
 
 	validateUserProfileForm() {
@@ -147,7 +142,7 @@ export class EditProfile extends Component {
 			
 			<Container>
 			
-				{ this.state.userProfile && <View>
+				{ this.state.userProfile && <Form>
 			
 					<View padding style={styles.photoContainer}>
 						<View style={styles.photoBackground}></View>
@@ -170,7 +165,7 @@ export class EditProfile extends Component {
 						<List.Item>
 							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 								<Text>Name</Text>
-								<Input style={{ 
+								<Form.Input style={{ 
 									flex: 1, 
 									borderRadius: 0, 
 									backgroundColor: 'transparent' }}
@@ -183,20 +178,14 @@ export class EditProfile extends Component {
 											userProfile: profile
 										});
 										this.validateUserProfileForm();
-									}}
-									onSubmitEditing={() => {
-										this.focusNextField('location')
-									}}
-									inputRef={input => {
-										this.inputs['name'] = input;
 									}}>
-								</Input>
+								</Form.Input>
 							</View>
 						</List.Item>
 						<List.Item style={{ borderBottomWidth: 0 }}>
 							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
 								<Text style={{ fontSize: 16 }}>Location</Text>
-								<Input style={{ 
+								<Form.Input style={{ 
 									flex: 1, 
 									borderRadius: 0, 
 									backgroundColor: 'transparent' }}
@@ -208,16 +197,13 @@ export class EditProfile extends Component {
 											userProfile: profile
 										});
 										this.validateUserProfileForm();
-									}}
-									inputRef={input => {
-										this.inputs['location'] = input;
 									}}>
-								</Input>
+								</Form.Input>
 							</View>
 						</List.Item>
 					</List> 
 
-				</View> }
+				</Form> }
 			
 			</Container>
 

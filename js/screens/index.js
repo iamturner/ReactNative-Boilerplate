@@ -36,7 +36,8 @@ const MainStack = createStackNavigator({
 	ChangePassword: { screen: ChangePassword }
 }, {
 	/* */
-	defaultNavigationOptions: navigationOptions
+	defaultNavigationOptions: navigationOptions,
+	//headerTransitionPreset: 'uikit'
 });
 
 export const RootNavigator = createStackNavigator({

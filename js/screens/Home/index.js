@@ -24,7 +24,7 @@ export class Home extends Component {
 	goToAccountSettings() {
 		this.props.navigation.navigate('AccountSettings')
 	}
-	
+
 	logOut() {
 		const confirm = () => {
 			

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Container, Loading, Toast, Colors } from './../../theme';
+import { View, Button, Input, Text, Container, Loading, Toast, Colors, Form } from './../../theme';
 import authActions from "./../../actions/auth";
 
 export class ChangePassword extends Component {
@@ -20,11 +20,6 @@ export class ChangePassword extends Component {
 			current: null, 
 			new: null
 		}
-		this.inputs = {};
-	}
-	
-	focusNextField(key) {
-		this.inputs[key].focus();
 	}
 	
 	validateChangePasswordForm() {
@@ -67,8 +62,8 @@ export class ChangePassword extends Component {
 
 					<View style={{ flex: 1 }}>
 
-						<View style={{ marginBottom: 16 }}>
-							<Input style={{ 
+						<Form style={{ marginBottom: 16 }}>
+							<Form.Input style={{ 
 								borderBottomWidth: 1, 
 								borderBottomColor: Colors.light, 
 								borderBottomLeftRadius: 0, 
@@ -77,18 +72,12 @@ export class ChangePassword extends Component {
 								onChangeText={(value) => {
 									this.changePasswordForm.current = value, 
 									this.validateChangePasswordForm()
-								}}
-								onSubmitEditing={() => {
-									this.focusNextField('new')
-								}}
-								inputRef={input => {
-									this.inputs['current'] = input;
 								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Current</Text>
 								</Input.Before>
-							</Input>
-							<Input style={{ 
+							</Form.Input>
+							<Form.Input style={{ 
 								borderTopLeftRadius: 0, 
 								borderTopRightRadius: 0 }}
 								secureTextEntry={true}
@@ -98,9 +87,6 @@ export class ChangePassword extends Component {
 									this.changePasswordForm.new = value, 
 									this.validateChangePasswordForm()
 								}}
-								inputRef={input => {
-									this.inputs['new'] = input;
-								}}
 								onSubmitEditing={() => {
 									if (this.state.valid) {
 										this.changePassword();
@@ -109,8 +95,8 @@ export class ChangePassword extends Component {
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>New</Text>
 								</Input.Before>
-							</Input>
-						</View>
+							</Form.Input>
+						</Form>
 
 						<Button primary disabled={!this.state.valid} onPress={() => this.changePassword()}>
 							<Button.Text>Submit</Button.Text>

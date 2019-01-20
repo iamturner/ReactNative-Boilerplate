@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-import { View, Button, Input, Text, Colors, Container, Loading } from './../../theme';
+import { View, Button, Input, Text, Colors, Container, Loading, Form } from './../../theme';
 import authActions from './../../actions/auth';
 import { StackActions, NavigationActions } from 'react-navigation';
 
@@ -22,11 +22,6 @@ export class Register extends Component {
 			email: null, 
 			password: null
 		}
-		this.inputs = {};
-	}
-	
-	focusNextField(key) {
-		this.inputs[key].focus();
 	}
 	
 	validateRegisterForm() {
@@ -73,8 +68,8 @@ export class Register extends Component {
 
 					<View style={{ flex: 1 }}>
 			
-						<View style={{ marginBottom: 16 }}>
-							<Input style={{ 
+						<Form style={{ marginBottom: 16 }}>
+							<Form.Input style={{ 
 								borderBottomWidth: 1, 
 								borderBottomColor: Colors.light, 
 								borderBottomLeftRadius: 0, 
@@ -85,18 +80,12 @@ export class Register extends Component {
 								onChangeText={(value) => {
 									this.registerForm.name = value, 
 									this.validateRegisterForm()
-								}}
-								onSubmitEditing={() => {
-									this.focusNextField('email')
-								}}
-								inputRef={input => {
-                                    this.inputs['name'] = input;
-                                }}>
+								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Name</Text>
 								</Input.Before>
-							</Input>
-							<Input style={{ 
+							</Form.Input>
+							<Form.Input style={{ 
 								borderBottomWidth: 1, 
 								borderBottomColor: Colors.light, 
 								borderRadius: 0 }}
@@ -107,18 +96,12 @@ export class Register extends Component {
 								onChangeText={(value) => {
 									this.registerForm.email = value, 
 									this.validateRegisterForm()
-								}}
-								onSubmitEditing={() => {
-									this.focusNextField('password')
-								}}
-								inputRef={input => {
-                                    this.inputs['email'] = input;
-                                }}>
+								}}>
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Email</Text>
 								</Input.Before>
-							</Input>
-							<Input style={{ 
+							</Form.Input>
+							<Form.Input style={{ 
 								borderTopLeftRadius: 0, 
 								borderTopRightRadius: 0 }}
 								secureTextEntry={true}
@@ -128,9 +111,6 @@ export class Register extends Component {
 									this.registerForm.password = value, 
 									this.validateRegisterForm()
 								}}
-								inputRef={input => {
-                                    this.inputs['password'] = input;
-                                }}
 								onSubmitEditing={() => {
 									if (this.state.valid) {
 										this.register();
@@ -139,8 +119,8 @@ export class Register extends Component {
 								<Input.Before>
 									<Text style={{ marginRight: 24 }}>Password</Text>
 								</Input.Before>
-							</Input>
-						</View>
+							</Form.Input>
+						</Form>
 
 						<Button primary disabled={!this.state.valid} onPress={() => this.register()}>
 							<Button.Text>Create Account</Button.Text>
