@@ -11,9 +11,9 @@ Ian Turner ( [@i_am_turner](http://twitter.com/i_am_turner) / [iamturner.co.uk](
 On the command prompt run the following commands
 
 ```sh
-$ git clone https://github.com/iamturner/ReactNative-Vanilla.git
+$ git clone https://github.com/iamturner/ReactNative-Boilerplate.git
 
-$ cd ReactNative-Vanilla/
+$ cd ReactNative-Boilerplate/
 
 $ npm install
 ```
