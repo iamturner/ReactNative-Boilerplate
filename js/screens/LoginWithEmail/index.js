@@ -77,7 +77,6 @@ export class LoginWithEmail extends Component {
 									borderBottomRightRadius: 0 }} 
 									keyboardType="email-address" 
 									autoCapitalize="none"
-									returnKeyType={"next"}
 									autoCorrect={false}
 									onChangeText={(value) => {
 										this.loginWithEmailForm.email = value, 

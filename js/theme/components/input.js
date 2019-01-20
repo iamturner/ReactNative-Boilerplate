@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { Component } from 'react';
 import { Platform, StyleSheet, View, Text, TextInput } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 
 export class Input extends React.Component {
     
@@ -40,10 +41,12 @@ export class Input extends React.Component {
 		let computedProps = _.clone(this.props);
 		delete computedProps.children;
 		
+		const InputComponent = ('type' in computedProps) ? TextInputMask : TextInput;
+		
         return (
 			<View style={[styles.container, this.props.style]}>
 				{ this.state.contentBefore }
-				<TextInput 
+				<InputComponent 
 					{...computedProps}
 					style={styles.input}
 					ref={this.props.inputRef}

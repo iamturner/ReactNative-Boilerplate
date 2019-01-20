@@ -75,7 +75,6 @@ export class Register extends Component {
 								borderBottomLeftRadius: 0, 
 								borderBottomRightRadius: 0 }}
 								autoCapitalize="words"
-								returnKeyType={"next"}
 								autoCorrect={false}
 								onChangeText={(value) => {
 									this.registerForm.name = value, 
@@ -91,7 +90,6 @@ export class Register extends Component {
 								borderRadius: 0 }}
 								keyboardType="email-address" 
 								autoCapitalize="none"
-								returnKeyType={"next"}
 								autoCorrect={false}
 								onChangeText={(value) => {
 									this.registerForm.email = value, 

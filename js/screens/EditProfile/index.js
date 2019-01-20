@@ -170,7 +170,6 @@ export class EditProfile extends Component {
 									borderRadius: 0, 
 									backgroundColor: 'transparent' }}
 									value={this.state.userProfile.name}
-									returnKeyType={"next"}
 									onChangeText={(value) => {
 										let profile = this.state.userProfile;
 											profile.name = value;
@@ -190,6 +189,7 @@ export class EditProfile extends Component {
 									borderRadius: 0, 
 									backgroundColor: 'transparent' }}
 									value={this.state.userProfile.location}
+									returnKeyType={"default"}
 									onChangeText={(value) => {
 										let profile = this.state.userProfile;
 											profile.location = value;
