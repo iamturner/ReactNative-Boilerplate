@@ -28,7 +28,7 @@ export class ForgotPassword extends Component {
 	}
 	
 	validateRecoverPasswordForm() {
-		let email = this.recoverPasswordForm.email;
+		const { email } = this.recoverPasswordForm;
 		this.setState({ 
 			valid: (email) ? true : false
 		});
@@ -38,8 +38,9 @@ export class ForgotPassword extends Component {
 		if (!this.state.valid) {
 			return false;
 		}
+		const { email } = this.recoverPasswordForm;
 		Loading.show();
-		authActions.recoverPassword(this.recoverPasswordForm.email).then(() => {
+		authActions.recoverPassword(email).then(() => {
 			Loading.dismiss();
 			this.props.navigation.pop();
 			/* Toast notification */

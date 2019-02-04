@@ -4,8 +4,9 @@ import { View, Button, List, Text, Colors, Container, ActionSheet } from './../.
 import authActions from './../../actions/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
-export class Home extends Component {
+class Home extends Component {
 
 	static navigationOptions = ({ navigation }) => {
 		return {
@@ -27,7 +28,6 @@ export class Home extends Component {
 
 	logOut() {
 		const confirm = () => {
-			
 			return new Promise((resolve, reject) => {
 				ActionSheet.show({
 					title: 'Are you sure you want to sign out?', 
@@ -42,7 +42,7 @@ export class Home extends Component {
 			});
 		}
 		confirm().then(() => {
-			authActions.logoutUser();
+			this.props.dispatchLogout();
 			const resetAction = StackActions.reset({
 				index: 0,
 				actions: [NavigationActions.navigate({ routeName: 'Login' })],
@@ -83,3 +83,15 @@ export class Home extends Component {
 	}
 	
 }
+
+const mapDispatchToProps = (dispatch) => {
+	
+	return {
+		dispatchLogout: () => dispatch(authActions.logoutUser())
+	}
+}
+
+export default connect(
+	null,
+	mapDispatchToProps
+)(Home);

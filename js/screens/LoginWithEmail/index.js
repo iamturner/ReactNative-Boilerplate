@@ -3,8 +3,9 @@ import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, K
 import { View, Button, Input, Text, Colors, Container, Loading, Form } from './../../theme';
 import authActions from './../../actions/auth';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
-export class LoginWithEmail extends Component {
+class LoginWithEmail extends Component {
 
 	static navigationOptions = {
 		title: 'Login With Email'
@@ -22,8 +23,7 @@ export class LoginWithEmail extends Component {
 	}
 	
 	validateLoginWithEmailForm() {
-		let email = this.loginWithEmailForm.email;
-		let password = this.loginWithEmailForm.password;
+		const { email, password } = this.loginWithEmailForm;
 		this.setState({ 
 			valid: (email && password) ? true : false
 		});
@@ -32,15 +32,14 @@ export class LoginWithEmail extends Component {
 	openForgotPassword() {
 		this.props.navigation.navigate('ForgotPassword')
 	}
-	
+
 	loginWithEmail() {
 		if (!this.state.valid) {
 			return false;
 		}
-		let email = this.loginWithEmailForm.email;
-		let password = this.loginWithEmailForm.password;
+		const { email, password } = this.loginWithEmailForm;
 		Loading.show();
-		authActions.loginWithEmail(email, password).then(() => {
+		this.props.dispatchLoginWithEmail(email, password).then(() => {
 			Loading.dismiss();
 			const resetAction = StackActions.reset({
 				index: 0,
@@ -130,3 +129,15 @@ export class LoginWithEmail extends Component {
 	}
 	
 }
+
+const mapDispatchToProps = (dispatch) => {
+	
+	return {
+		dispatchLoginWithEmail: (email, password) => dispatch(authActions.loginWithEmail(email, password))
+	}
+}
+
+export default connect(
+	null,
+	mapDispatchToProps
+)(LoginWithEmail);

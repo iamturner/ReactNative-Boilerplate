@@ -23,9 +23,9 @@ export class ChangeEmail extends Component {
 	}
 	
 	validateChangeEmailForm() {
-		let email = this.changeEmailForm.newEmail;
+		const { newEmail } = this.changeEmailForm;
 		this.setState({ 
-			valid: (email) ? true : false
+			valid: (newEmail) ? true : false
 		});
 	}
 	
@@ -33,7 +33,7 @@ export class ChangeEmail extends Component {
 		if (!this.state.valid) {
 			return false;
 		}
-		let newEmail = this.changeEmailForm.newEmail;
+		const { newEmail } = this.changeEmailForm;
 		/* User should reauthenticate before changing their email */
 		const confirmPassword = () => {
 			return new Promise((resolve, reject) => {

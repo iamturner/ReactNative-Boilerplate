@@ -23,8 +23,8 @@ export class ChangePassword extends Component {
 	}
 	
 	validateChangePasswordForm() {
-		let currentPassword = this.changePasswordForm.current;
-		let newPassword = this.changePasswordForm.new;
+		const currentPassword = this.changePasswordForm.current;
+		const newPassword = this.changePasswordForm.new;
 		this.setState({ 
 			valid: (currentPassword && newPassword) ? true : false
 		});
@@ -34,8 +34,8 @@ export class ChangePassword extends Component {
 		if (!this.state.valid) {
 			return false;
 		}
-		let currentPassword = this.changePasswordForm.current;
-		let newPassword = this.changePasswordForm.new;
+		const currentPassword = this.changePasswordForm.current;
+		const newPassword = this.changePasswordForm.new;
 		Loading.show();
 		authActions.updatePassword(currentPassword, newPassword).then(() => {
 			Loading.dismiss();

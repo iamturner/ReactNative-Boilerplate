@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import { View, List, Text, Colors, Container, Button } from './../../theme';
 import profileActions from './../../actions/profile';
+import { connect } from 'react-redux';
 
-export class Profile extends Component {
+class Profile extends Component {
 	
 	static navigationOptions = ({ navigation }) => {
 		return {
@@ -24,15 +25,21 @@ export class Profile extends Component {
 	}
 
 	componentWillMount() {
-		profileActions.getUserProfile().then((user) => {
-			this.setState({
-				userProfile: user
-        	});
+		this.setState({
+			userProfile: {...this.props.profile}
 		});
 	}
 
 	componentDidMount() {
 		this.props.navigation.setParams({ updateProfile: this.updateProfile });
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.profile !== this.props.profile) {
+			this.setState({
+				userProfile: {...this.props.profile}
+			});
+		}
 	}
 
 	updateProfile = (data) => {
@@ -63,7 +70,7 @@ export class Profile extends Component {
 					<View style={{ marginTop: 20, paddingHorizontal: 16 }}>
 						<Text style={{ fontSize: 14 }}>Personal Information</Text>
 					</View>
-
+			
 					<List style={{ marginTop: 10 }}>
 						<List.Item>
 							<View style={{ paddingVertical: 11, flexDirection: 'row' }}>
@@ -114,3 +121,12 @@ const styles = StyleSheet.create({
 		borderRadius: 40
 	}
 });
+
+const mapStateToProps = ({ profile }) => {
+
+    return profile;
+};
+
+export default connect(
+	mapStateToProps
+)(Profile);

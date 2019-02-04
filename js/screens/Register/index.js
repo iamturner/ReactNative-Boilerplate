@@ -3,8 +3,9 @@ import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, K
 import { View, Button, Input, Text, Colors, Container, Loading, Form } from './../../theme';
 import authActions from './../../actions/auth';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
-export class Register extends Component {
+class Register extends Component {
 
 	static navigationOptions = ({ navigation }) => {
 		return {
@@ -25,9 +26,7 @@ export class Register extends Component {
 	}
 	
 	validateRegisterForm() {
-		let name = this.registerForm.name;
-		let email = this.registerForm.email;
-		let password = this.registerForm.password;
+		const { name, email, password } = this.registerForm;
 		this.setState({ 
 			valid: (name && email && password) ? true : false
 		});
@@ -37,11 +36,9 @@ export class Register extends Component {
 		if (!this.state.valid) {
 			return false;
 		}
-		let name = this.registerForm.name;
-		let email = this.registerForm.email;
-		let password = this.registerForm.password;
+		const { name, email, password } = this.registerForm;
 		Loading.show();
-		authActions.register(name, email, password).then(() => {
+		this.props.dispatchRegister(name, email, password).then(() => {
 			Loading.dismiss();
 			const resetAction = StackActions.reset({
 				index: 0,
@@ -137,3 +134,15 @@ export class Register extends Component {
 	}
 	
 }
+
+const mapDispatchToProps = (dispatch) => {
+	
+	return {
+		dispatchRegister: (name, email, password) => dispatch(authActions.register(name, email, password))
+	}
+}
+
+export default connect(
+	null,
+	mapDispatchToProps
+)(Register);

@@ -2,16 +2,16 @@ import React from "react";
 import { createStackNavigator, createBottomTabNavigator } from "react-navigation";
 
 /* Screens */
-import { AuthLoading } from './AuthLoading';
+import AuthLoading from './AuthLoading';
 import { Login } from './Login';
-import { LoginWithEmail } from './LoginWithEmail';
-import { Register } from './Register';
-import { Home } from './Home';
-import { Profile } from './Profile';
-import { AccountSettings } from './AccountSettings';
+import LoginWithEmail from './LoginWithEmail';
+import Register from './Register';
+import Home from './Home';
+import Profile from './Profile';
+import AccountSettings from './AccountSettings';
 import { ChangeEmail } from './ChangeEmail';
 import { ChangePassword } from './ChangePassword';
-import { EditProfile } from './EditProfile';
+import EditProfile from './EditProfile';
 import { ForgotPassword } from './ForgotPassword';
 import { CameraRollPage } from './CameraRoll';
 
@@ -36,8 +36,7 @@ const MainStack = createStackNavigator({
 	ChangePassword: { screen: ChangePassword }
 }, {
 	/* */
-	defaultNavigationOptions: navigationOptions,
-	//headerTransitionPreset: 'uikit'
+	defaultNavigationOptions: navigationOptions
 });
 
 export const RootNavigator = createStackNavigator({

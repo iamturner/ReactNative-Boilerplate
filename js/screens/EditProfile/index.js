@@ -3,8 +3,9 @@ import { Platform, StyleSheet, Alert, Image, TouchableWithoutFeedback, Keyboard 
 import { View, Button, List, Input, Text, Container, Colors, Loading, Toast, ActionSheet, Form } from './../../theme';
 import profileActions from './../../actions/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
 
-export class EditProfile extends Component {
+class EditProfile extends Component {
 	
 	static navigationOptions = ({ navigation }) => {
 		return {
@@ -31,12 +32,10 @@ export class EditProfile extends Component {
 	}
 
 	componentWillMount() {
-		profileActions.getUserProfile().then((user) => {
-			this.setState({
-				userProfile: JSON.parse(JSON.stringify(user))
-        	}, () => {
-				this.validateUserProfileForm();
-			});
+		this.setState({
+			userProfile: {...this.props.profile}
+		}, () => {
+			this.validateUserProfileForm();
 		});
 	}
 	
@@ -59,7 +58,7 @@ export class EditProfile extends Component {
 	}
 
 	validateUserProfileForm() {
-		let name = this.state.userProfile.name;
+		const { name } = this.state.userProfile;
 		this.setState({ 
 			valid: (name) ? true : false
 		});
@@ -112,26 +111,14 @@ export class EditProfile extends Component {
 	}
 
 	updateProfile = () => {
-		if (!this.state.valid) {
-			return false;
-		}
-		let name = this.state.userProfile.name;
-		let location = this.state.userProfile.location;
-		let photo = this.state.userProfile.photo;
 		Loading.show();
-		profileActions.updateUserProfile(name, location, photo).then(() => {
+		this.props.dispatchUpdateProfile(this.state.userProfile).then(() => {
 			Loading.dismiss();
-			/* Publish profile update */
-			const updateProfile = this.props.navigation.getParam('onUpdatedProfile');
-			updateProfile(this.state.userProfile);
-			/* Close modal */
+			// Close modal 
 			this.props.navigation.pop();
-			/* Toast notification */
+			// Toast notification 
 			Toast.show("Your profile has been updated.");
-		}, error => {
-			Loading.dismiss();
-			Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
-		});
+		})
 	}
 
 	render() {
@@ -249,3 +236,20 @@ const styles = StyleSheet.create({
 		backgroundColor: 'transparent'
 	}
 });
+
+const mapStateToProps = ({ profile }) => {
+
+    return profile;
+};
+
+const mapDispatchToProps = (dispatch) => {
+	
+	return {
+		dispatchUpdateProfile: (profile) => dispatch(profileActions.updateProfile(profile))
+	}
+}
+
+export default connect(
+	mapStateToProps, 
+	mapDispatchToProps
+)(EditProfile);

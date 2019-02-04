@@ -1,22 +1,32 @@
+// Auth actions
+
 import { AsyncStorage } from 'react-native';
 
 module.exports = {
 	
 	/* Login With Email */
 	
-	loginWithEmail: (email, password) => {
+	loginWithEmail: (email, password) => (dispatch) => {
 		return new Promise((resolve, reject) => {
 			// Update AsyncStorage with logged in user
 			AsyncStorage.setItem('loggedUser', 'user');
+			dispatch({
+				type: 'LOGIN_USER',
+				user: 'user'
+			});
 			return resolve();
 		});
 	}, 
 	
 	/* Logout */
 	
-	logoutUser: () => {
+	logoutUser: () => (dispatch) => {
         // Remove logged in user from AsyncStorage
 		AsyncStorage.removeItem('loggedUser');
+		dispatch({
+			type: 'LOGOUT_USER'
+		});
+		return;
     }, 
 	
 	/* Recover Password */
@@ -29,10 +39,14 @@ module.exports = {
 	
 	/* Register New User */
     
-	register: (name, email, password) => {
+	register: (name, email, password) => (dispatch) => {
 		return new Promise((resolve, reject) => {
 			// Update AsyncStorage with logged in user
 			AsyncStorage.setItem('loggedUser', 'user');
+			dispatch({
+				type: 'LOGIN_USER',
+				user: 'user'
+			});
 			return resolve();
 		});
     }, 
@@ -55,10 +69,13 @@ module.exports = {
 	
 	/* Delete User Account */
     
-	deleteAccount: (password) => {
+	deleteAccount: (password) => (dispatch) => {
 		return new Promise((resolve, reject) => {
 			// Remove logged in user from AsyncStorage
 			AsyncStorage.removeItem('loggedUser');
+			dispatch({
+				type: 'LOGOUT_USER'
+			});
 			return resolve();
 		});
     }

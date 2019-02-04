@@ -5,8 +5,9 @@ import authActions from './../../actions/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import prompt from 'react-native-prompt-android';
 import { StackActions, NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
-export class AccountSettings extends Component {
+class AccountSettings extends Component {
 
 	static navigationOptions = ({ navigation }) => {
 		return {
@@ -56,7 +57,7 @@ export class AccountSettings extends Component {
 		}
 		confirm().then((password) => {
 			Loading.show();
-			authActions.deleteAccount(password).then(() => {
+			this.props.dispatchDeleteAccount(password).then(() => {
 				Loading.dismiss();
 				const resetAction = StackActions.reset({
 					index: 0,
@@ -106,3 +107,15 @@ export class AccountSettings extends Component {
 	}
 	
 }
+
+const mapDispatchToProps = (dispatch) => {
+	
+	return {
+		dispatchDeleteAccount: (password) => dispatch(authActions.deleteAccount(password))
+	}
+}
+
+export default connect(
+	null,
+	mapDispatchToProps
+)(AccountSettings);

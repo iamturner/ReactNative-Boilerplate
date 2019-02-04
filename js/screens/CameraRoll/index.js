@@ -23,8 +23,6 @@ export class CameraRollPage extends Component {
 		this.state = {
 			photos: null
         };
-		/* Listen for nav bar events, (e.g. clicking the 'Cancel' button) */
-		//this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 	}
 	
 	componentWillMount() {
