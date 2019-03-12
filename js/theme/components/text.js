@@ -9,11 +9,26 @@ export class Text extends React.Component {
     }
         
     render() {
+		
+		const { children, style = {} } = this.props;
+		
+		/* Pass props to children */
+		const childrenWithProps = React.Children.map(children, child => {
+			if (typeof child == 'object' && child != null) {
+				/* Pass style prop to child <Text> elements */
+				return React.cloneElement(child, {
+					style: Array.isArray(style) ? [...style, ...[child.props.style]] : { ...style, ...child.props.style }
+				});
+			} else {
+				return child
+			}
+		});
+		
         return (
 			<El 
 				{...this.props}
-				style={[styles.text, this.props.style]}>
-				{ this.props.children }
+				style={[styles.text, style]}>
+				{ childrenWithProps }
 			</El>
         )
     }
