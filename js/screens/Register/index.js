@@ -40,11 +40,6 @@ class Register extends Component {
 		Loading.show();
 		this.props.dispatchRegister(name, email, password).then(() => {
 			Loading.dismiss();
-			const resetAction = StackActions.reset({
-				index: 0,
-				actions: [NavigationActions.navigate({ routeName: 'Home' })],
-			});
-			this.props.navigation.dispatch(resetAction);
 		}, error => {
 			Loading.dismiss();
 			Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });

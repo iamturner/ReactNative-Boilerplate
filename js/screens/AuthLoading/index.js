@@ -25,12 +25,6 @@ class AuthLoading extends Component {
 		if (user) {
 			this.props.dispatchAuthUser(user)
 		}
-		
-		const resetAction = StackActions.reset({
-			index: 0,
-			actions: [NavigationActions.navigate({ routeName: user == null ? 'Login' : 'Home' })],
-		});
-		this.props.navigation.dispatch(resetAction);
 	}
 
 	render() {
@@ -43,9 +37,9 @@ class AuthLoading extends Component {
 	}
 	
 }
-
+			
 const mapDispatchToProps = (dispatch) => {
-	
+
 	return {
 		dispatchAuthUser: (user) => dispatch({
 			type: 'LOGIN_USER',

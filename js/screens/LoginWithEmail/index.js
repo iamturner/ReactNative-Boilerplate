@@ -41,11 +41,6 @@ class LoginWithEmail extends Component {
 		Loading.show();
 		this.props.dispatchLoginWithEmail(email, password).then(() => {
 			Loading.dismiss();
-			const resetAction = StackActions.reset({
-				index: 0,
-				actions: [NavigationActions.navigate({ routeName: 'Home' })],
-			});
-			this.props.navigation.dispatch(resetAction);
 		}, error => {
 			Loading.dismiss();
 			Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });

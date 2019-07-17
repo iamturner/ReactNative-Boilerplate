@@ -59,11 +59,6 @@ class AccountSettings extends Component {
 			Loading.show();
 			this.props.dispatchDeleteAccount(password).then(() => {
 				Loading.dismiss();
-				const resetAction = StackActions.reset({
-					index: 0,
-					actions: [NavigationActions.navigate({ routeName: 'Login' })],
-				});
-				this.props.navigation.dispatch(resetAction);
 			}, error => {
 				Loading.dismiss();
 				Alert.alert('Error', error.message, [{text: 'OK'}], { cancelable: false });
