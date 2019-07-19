@@ -54,7 +54,7 @@ const AuthedStack = createBottomTabNavigator({
 }, {
 	defaultNavigationOptions: ({ navigation }) => ({
 		tabBarIcon: ({ focused, horizontal, tintColor }) => {
-			return <Icon name={'ios-home'} size={25} color={tintColor} />;
+			return <Icon name={'md-home'} size={25} color={tintColor} />;
 		}
 	}),
 	tabBarOptions: {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Colors } from './../variables/colors';
+import { Text } from './../';
 
 export class Button extends React.Component {
     
@@ -14,13 +15,38 @@ export class Button extends React.Component {
 	
     render() {
 		
-		const { children } = this.props;
+		const { children, color = '', variant = '', disabled, style } = this.props;
+		
+		const Variants = {
+			outline: styles.buttonOutline,
+			clear: {/* IF NECESSARY */}
+		}
+		
+		let buttonStyles = {};
+        let buttonTextStyles = {};
+		
+		/* Set Color */
+        if (Colors.hasOwnProperty(color) && variant == '') { 
+            buttonStyles.backgroundColor = Colors[color]
+			/* Set text color to white if not a 'light' button */
+            if (color != "light") {
+                buttonTextStyles.color = 'white'
+            }
+        }
+		
+		/* Set Variant */
+		if (Variants.hasOwnProperty(variant)) { 
+            buttonStyles = Object.assign(buttonStyles, Variants[variant])
+			if (Colors.hasOwnProperty(color)) { 
+				buttonStyles.borderColor = Colors[color]
+				buttonTextStyles.color = Colors[color]
+			}
+        }
 		
 		/* Pass props to children */
 		const childrenWithProps = React.Children.map(children, child => 
 			React.cloneElement(child, {
-		  		primary: this.props.primary,
-				outline: this.props.outline
+		  		buttonTextStyles: buttonTextStyles
 			}));
 		
         return (
@@ -28,12 +54,10 @@ export class Button extends React.Component {
 				{...this.props}
 				style={[
 					styles.button, 
-					(this.props.primary ? styles.buttonPrimary : null), 
-					(this.props.outline ? styles.buttonOutline : null), 
-					(this.props.disabled ? styles.buttonDisabled : null),
-					this.props.style
+					buttonStyles,
+					style
 				]} 
-				activeOpacity={this.props.disabled ? 0.4 : 0.8}>
+				activeOpacity={disabled ? 0.4 : 0.8}>
 				<View>
 					{ childrenWithProps }
 				</View>
@@ -51,16 +75,17 @@ export class ButtonText extends React.Component {
 	
 	render() {
 		
+		const { children, buttonTextStyles, style } = this.props;
+		
 		return (
 			<Text 
 				{...this.props}
 				style={[
 					styles.buttonText, 
-					(this.props.primary ? styles.buttonTextWhite : null), 
-					(this.props.outline ? styles.buttonTextPrimary : null), 
-					this.props.style
+					buttonTextStyles,
+					style
 				]}>
-				{ this.props.children }
+				{ children }
 			</Text>
 		)
 		
@@ -80,9 +105,8 @@ const styles = StyleSheet.create({
 		backgroundColor: Colors.primary
 	},
 	buttonOutline: {
-		backgroundColor: 'transparent', 
-		borderWidth: 1, 
-		borderColor: Colors.primary
+		borderWidth: 1,
+		borderColor: Platform.OS === 'ios' ? 'rgb(0,122,255)' : 'rgb(0,0,0)'
 	}, 
 	buttonDisabled: {
 		opacity: 0.4

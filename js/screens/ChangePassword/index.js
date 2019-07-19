@@ -98,7 +98,7 @@ export class ChangePassword extends Component {
 							</Form.Input>
 						</Form>
 
-						<Button primary disabled={!this.state.valid} onPress={() => this.changePassword()}>
+						<Button color={'primary'} disabled={!this.state.valid} onPress={() => this.changePassword()}>
 							<Button.Text>Submit</Button.Text>
 						</Button>
 

@@ -136,9 +136,7 @@ class EditProfile extends Component {
 						<View style={styles.photo}>
 							{ this.state.userProfile.photo && <Image style={styles.photoImage} source={{uri: this.state.userProfile.photo}} /> }
 							<Button style={styles.photoButton} onPress={() => this.openCameraRoll()}>
-								<Button.Text>
-									<Icon name="ios-camera" size={40} color={'white'} style={{marginTop: 4}} />
-								</Button.Text>
+								<Icon name="ios-camera" size={40} color={'white'} />
 							</Button>
 						</View>
 					</View>

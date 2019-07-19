@@ -101,7 +101,7 @@ class LoginWithEmail extends Component {
 								</Form.Input>
 							</Form>
 
-							 <Button primary disabled={!this.state.valid} onPress={() => this.loginWithEmail()}>
+							 <Button color={'primary'} disabled={!this.state.valid} onPress={() => this.loginWithEmail()}>
 								<Button.Text>Sign In</Button.Text>
 							</Button>
 
@@ -109,8 +109,8 @@ class LoginWithEmail extends Component {
 
 					</KeyboardAvoidingView>
 
-					<Button style={{ backgroundColor: 'transparent' }} onPress={() => this.openForgotPassword()}>
-						<Button.Text style={{ color: Colors.primary }}>Forgot Password</Button.Text>
+					<Button color={'primary'} variant={'clear'} onPress={() => this.openForgotPassword()}>
+						<Button.Text>Forgot Password</Button.Text>
 					</Button>
 
 				</SafeAreaView>

@@ -94,7 +94,7 @@ export class ForgotPassword extends Component {
 							</Input>
 						</View>
 
-						<Button primary disabled={!this.state.valid} onPress={() => this.recoverPassword()}>
+						<Button color={'primary'} disabled={!this.state.valid} onPress={() => this.recoverPassword()}>
 							<Button.Text>Submit</Button.Text>
 						</Button>
 

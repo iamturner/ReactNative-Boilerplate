@@ -26,11 +26,11 @@ export class Login extends Component {
 			
 			<Container padding>
 
-				<Button primary onPress={() => this.goToLoginWithEmail()}>
+				<Button color={'primary'} onPress={() => this.goToLoginWithEmail()}>
 					<Button.Text>Sign in with Email</Button.Text>
 				</Button>
 				
-				<Button primary outline style={{ marginTop: 24 }} onPress={() => this.goToRegister()}>
+				<Button color={'primary'} variant={'outline'} style={{ marginTop: 24 }} onPress={() => this.goToRegister()}>
 					<Button.Text>Create New Account</Button.Text>
 				</Button>
 
