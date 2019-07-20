@@ -15,7 +15,12 @@ export class Button extends React.Component {
 	
     render() {
 		
-		const { children, color = '', variant = '', disabled, style } = this.props;
+		const { children, color = '', size = 'normal', variant = '', disabled, style } = this.props;
+		
+		const Sizes = {
+			small: styles.buttonSmall,
+			large: styles.buttonLarge
+		}
 		
 		const Variants = {
 			outline: styles.buttonOutline,
@@ -33,6 +38,13 @@ export class Button extends React.Component {
                 buttonTextStyles.color = 'white'
             }
         }
+		
+		/* Set Size */
+		if (Sizes.hasOwnProperty(size)) { 
+            buttonStyles = Object.assign(buttonStyles, Sizes[size])
+			/* Set text size */
+			buttonTextStyles.fontSize = Sizes[size].fontSize
+		}
 		
 		/* Set Variant */
 		if (Variants.hasOwnProperty(variant)) { 
@@ -108,6 +120,15 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderColor: Platform.OS === 'ios' ? 'rgb(0,122,255)' : 'rgb(0,0,0)'
 	}, 
+	buttonSmall: {
+		fontSize: 15,
+		height: 32
+	},
+	buttonLarge: {
+		fontSize: 19,
+		height: 54,
+		paddingHorizontal: 20
+	},
 	buttonDisabled: {
 		opacity: 0.4
 	}, 

@@ -70,7 +70,7 @@ class Home extends Component {
 				<Button style={{ marginTop: 24, borderRadius: 0, backgroundColor: 'white' }} onPress={() => this.logOut()}>
 					<Button.Text style={{ color: Colors.danger }}>Sign Out</Button.Text>
 				</Button>
-				
+
 			</Container>
 			
 		);
