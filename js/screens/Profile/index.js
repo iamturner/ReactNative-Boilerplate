@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
-import { View, List, Text, Colors, Container, Button } from './../../theme';
-import profileActions from './../../actions/profile';
+import { StyleSheet, ActivityIndicator } from 'react-native';
+import { View, List, Text, Colors, Container, Button, Image } from './../../theme';
 import { connect } from 'react-redux';
 
 class Profile extends Component {
@@ -63,7 +62,9 @@ class Profile extends Component {
                     { this.state.userProfile.photo && <View padding style={styles.photoContainer}>
                         <View style={styles.photoBackground}></View>
                         <View style={styles.photo}>
-                            <Image style={styles.photoImage} source={{uri: this.state.userProfile.photo}} />
+                            <Image style={styles.photoImage} 
+                                source={{uri: this.state.userProfile.photo}}
+                                placeholder={require('./../../../assets/img/user.png')} />
                         </View>
                     </View> }
             

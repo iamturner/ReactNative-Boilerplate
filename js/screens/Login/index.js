@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet } from 'react-native';
-import { View, Button, Colors, Container } from './../../theme';
+import { Button, Container } from './../../theme';
 
 export class Login extends Component {
 

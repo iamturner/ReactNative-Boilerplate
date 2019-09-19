@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, AlertIOS } from 'react-native';
+import { Platform, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, AlertIOS } from 'react-native';
 import { View, Button, Input, Text, Container, Loading, Toast } from './../../theme';
 import authActions from "./../../actions/auth";
 import prompt from 'react-native-prompt-android';

@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, AlertIOS, Alert } from 'react-native';
+import { Platform, TouchableOpacity, AlertIOS, Alert } from 'react-native';
 import { View, Button, List, Text, Colors, Container, Loading } from './../../theme';
 import authActions from './../../actions/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
 import prompt from 'react-native-prompt-android';
-import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 class AccountSettings extends Component {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Alert, Image, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { View, Button, List, Input, Text, Container, Colors, Loading, Toast, ActionSheet, Form } from './../../theme';
+import { StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Button, List, Text, Container, Loading, Toast, ActionSheet, Form, Image } from './../../theme';
 import profileActions from './../../actions/profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';

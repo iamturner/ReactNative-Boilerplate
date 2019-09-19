@@ -10,6 +10,7 @@ export var { ActionSheet } = require('./components/actionSheet');
 export var { Loading } = require('./components/loading');
 export var { Toast } = require('./components/toast');
 export var { Form } = require('./components/form');
+export var { Image } = require('./components/image');
 
 /* Variables */
 export var { Colors } = require('./variables/colors');

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, SafeAreaView } from 'react-native';
+import { KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Alert, SafeAreaView } from 'react-native';
 import { View, Button, Input, Text, Colors, Container, Loading, Form } from './../../theme';
 import authActions from './../../actions/auth';
-import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 class LoginWithEmail extends Component {

@@ -1,6 +1,6 @@
 const initialState = { 
     profile: {
-        location: "Carrickfergus", 
+        location: "Belfast", 
         name: "Ian Turner", 
         photo: null
     }

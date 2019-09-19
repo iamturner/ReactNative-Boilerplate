@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { Platform, AsyncStorage } from 'react-native';
-import { Container, Text } from './../../theme';
-import { StackActions, NavigationActions } from 'react-navigation';
-import authActions from './../../actions/auth';
+import { AsyncStorage } from 'react-native';
+import { Container } from './../../theme';
 import { connect } from 'react-redux';
 
 class AuthLoading extends Component {

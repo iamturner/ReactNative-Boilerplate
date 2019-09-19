@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { View, Button, List, Text, Colors, Container, ActionSheet } from './../../theme';
+import { TouchableOpacity } from 'react-native';
+import { Button, List, Text, Colors, Container, ActionSheet } from './../../theme';
 import authActions from './../../actions/auth';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { StackActions, NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 
 class Home extends Component {
